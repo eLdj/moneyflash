@@ -13,3 +13,4 @@ composer require swiftmailer-bundle
 composer require validator
  composer require --dev symfony/phpunit-bridge
  composer require --dev symfony/test-pack
+ composer require --dev doctrine/doctrine-fixtures-bundle
