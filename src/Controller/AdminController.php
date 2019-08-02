@@ -23,6 +23,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class AdminController extends FOSRestController
 {   
+
     /**
      * @Rest\Post(
      *    path = "/part",
@@ -32,19 +33,18 @@ class AdminController extends FOSRestController
      * @ParamConverter("part", converter="fos_rest.request_body")
      * @ParamConverter("user", converter="fos_rest.request_body")
      * @ParamConverter("cmpt", converter="fos_rest.request_body")
-     * @IsGranted("ROLE_SUPERUSER")
-     *   
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function createPart(Request $request,Partenaire $part,Utilisateur $user,Compte $cmpt, ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user = new Utilisateur();
         $values = json_decode($request->getContent());
         $part->setCreatedAt(new \DateTime());
         $cmpt->setDateDepot(new \DateTime());
-        $user->setRoles(['ROLE_SUPERADMIN']);
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
 
-        if (count($violations)) {
+        if (count($violations)) 
+        {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
         
