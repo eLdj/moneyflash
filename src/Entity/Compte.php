@@ -46,6 +46,7 @@ class Compte
     public function __construct()
     {
         $this->depots = new ArrayCollection();
+        $this->dateDepot = new \DateTime();
     }
 
     public function getId(): ?int

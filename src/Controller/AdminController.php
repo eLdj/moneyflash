@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\View;
+use App\Entity\Compte;
+use App\Form\PartType;
+use App\Entity\Partenaire;
 use App\Entity\Utilisateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/api")
@@ -18,24 +24,40 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminController extends FOSRestController
 {   
     /**
-     * @Rest\Get("/employes")
+     * @Rest\Post(
+     *    path = "/part",
+     *    name = "app_part_create"
+     * )
+     * @Rest\View(StatusCode = 201)
+     * @ParamConverter("part", converter="fos_rest.request_body")
+     * @ParamConverter("user", converter="fos_rest.request_body")
+     * @ParamConverter("cmpt", converter="fos_rest.request_body")
+     * @IsGranted("ROLE_SUPERUSER")
+     *   
      */
-    public function index()
+    public function createPart(Request $request,Partenaire $part,Utilisateur $user,Compte $cmpt, ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $repo=$this->getDoctrine()->getRepository(Utilisateur::class);
-        $employes=$repo->findAll();
-        return $this->handleView($this->view($employes));
+        $user = new Utilisateur();
+        $values = json_decode($request->getContent());
+        $part->setCreatedAt(new \DateTime());
+        $cmpt->setDateDepot(new \DateTime());
+        $user->setRoles(['ROLE_SUPERADMIN']);
+        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
+
+        if (count($violations)) {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+        
+        if($user->setPartenaire($part) && $cmpt->setPartenaire($part))
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cmpt);
+            $em->persist($user);
+            $em->persist($part);
+            $em->flush();
+        }
+       
+        return $this->view($part, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 
-    /**
-     * @Get(
-     *      path = "/user/{id}",
-     *      name="app_article_show"   
-     * )
-     * @View
-     */
-    public function show(Utilisateur $user)
-    {
-        return $this->handleView($this->view($user));
-    }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PartenaireRepository")
@@ -63,10 +64,13 @@ class Partenaire
      */
     private $utilisateurs;
 
+    private $file;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
         $this->utilisateurs = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -218,5 +222,42 @@ class Partenaire
         }
 
         return $this;
+    }
+
+    
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function upload()
+    {
+        if(null == $this->file)
+        {
+            return;
+        }
+
+        $name = $this->file->getClientOriginalName();
+        $this->file->move( $this->getUploadRootDir(), $name);
+        $this->url = $name;
+        $this->alt = $name;
+    }
+
+    public function getUploadDir()
+    {
+        return 'uploads/img';
+    }
+
+    protected function getUploadRootDir()
+    {
+        // On retourne le chemin relatif vers l'image pour notre code PHP
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 }
