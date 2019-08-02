@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Repository\PartenaireRepository;
 
 /**
  * @Route("/api")
@@ -29,7 +30,6 @@ class AdminController extends FOSRestController
      *    path = "/part",
      *    name = "app_part_create"
      * )
-     * @Rest\View(StatusCode = 201)
      * @ParamConverter("part", converter="fos_rest.request_body")
      * @ParamConverter("user", converter="fos_rest.request_body")
      * @ParamConverter("cmpt", converter="fos_rest.request_body")
@@ -58,6 +58,36 @@ class AdminController extends FOSRestController
         }
        
         return $this->view($part, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+    }
+    
+    /**
+     * @Rest\Post(
+     *    path = "/user",
+     *    name = "app_user_create"
+     * )
+     *  @ParamConverter("user", converter="fos_rest.request_body")
+     *  @IsGranted("ROLE_ADMIN")
+     */
+    public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $values = json_decode($request->getContent());
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));      
+        $part = $this->getDoctrine()->getRepository(Partenaire::class)->findAll();
+        if (count($violations))
+        {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+        
+        if($user->setPartenaire($part[0]))
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+        }
+       
+        return $this->view($user, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+      
     }
 
 }

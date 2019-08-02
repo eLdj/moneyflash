@@ -22,7 +22,7 @@ class PartenaireRepository extends ServiceEntityRepository
     // /**
     //  * @return Partenaire[] Returns an array of Partenaire objects
     //  */
-    /*
+    
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('p')
@@ -34,7 +34,7 @@ class PartenaireRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Partenaire
