@@ -40,28 +40,18 @@ class AdminController extends FOSRestController
      */
     public function createPart(Request $request,Partenaire $part,Utilisateur $user,Compte $cmpt, ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $values = json_decode($request->getContent(), true);
-        
-        $form = $this->createForm(UserType::class, $user);
-        $form1 = $this->createForm(CompteType::class, $cmpt);
-        $form->handleRequest($request);
-        $form1->handleRequest($request);
-
-        $form->submit($values);
-        $form1->submit($values);
+       
+        $user->setPartenaire($part);
+        $cmpt->setPartenaire($part);
+        $part->setCreatedAt(new \DateTime());
+        $cmpt->setDateDepot(new \DateTime());
+        $user->setRoles(["ROLE_ADMIN"]);
+        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+       
         if (count($violations)) 
         {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
-        
-   
-
-        $part->setCreatedAt(new \DateTime());
-        $cmpt->setDateDepot(new \DateTime());
-        $user->setRoles(["ROLE_ADMIN"]);
-        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
-        $user->setPartenaire($part);
-        $cmpt->setPartenaire($part);
         $em = $this->getDoctrine()->getManager();
         
         $em->persist($cmpt);
@@ -74,7 +64,7 @@ class AdminController extends FOSRestController
     
     /**
      * @Rest\Post(
-     *    path = "/user",
+     *    path = "/utilisateurs",
      *    name = "app_user_create"
      * )
      *  @ParamConverter("user", converter="fos_rest.request_body")
@@ -105,7 +95,7 @@ class AdminController extends FOSRestController
     /**
      * @Rest\View(StatusCode = 200)
      * @Rest\Put(
-     *      path = "/comptes/{id}",
+     *      path = "/compte/{id}",
      *      name = "depot",
      * )
      * @ParamConverter("dpt", converter="fos_rest.request_body")
@@ -120,6 +110,7 @@ class AdminController extends FOSRestController
 
             throw new ResourceValidationException($message);
         }
+        
         $user = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
         $part = $this->getDoctrine()->getRepository(Compte::class)->findAll();
         
@@ -133,6 +124,36 @@ class AdminController extends FOSRestController
         $em->persist($dpt);
         $em->flush();
 
+        return $cpt;
+
     }
+
+    /** 
+    * @Rest\View(StatusCode = 200)
+    * @Rest\Put(
+    *    path = "/statut/{id}",
+    *    name = "app_part_modif"
+    * )
+    * @ParamConverter("newparte", converter="fos_rest.request_body")
+    */
+    public function editpart(Utilisateur $parte,Utilisateur $newparte, ConstraintViolationList $violations)
+    {
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+
+            throw new ResourceValidationException($message);
+        }
+
+        $parte->setStatut($newparte->getStatut());
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+     
+        return  $this->handleView($this->view($parte, Response::HTTP_CREATED));
+    }
+
+
 
 }
