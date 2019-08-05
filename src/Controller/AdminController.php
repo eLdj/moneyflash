@@ -64,23 +64,22 @@ class AdminController extends FOSRestController
     
     /**
      * @Rest\Post(
-     *    path = "/utilisateurs",
+     *    path = "/partenaires/{id}",
      *    name = "app_user_create"
      * )
      *  @ParamConverter("user", converter="fos_rest.request_body")
      */
-    public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
+    public function addUser(Request $request,Partenaire $part,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
     {
         $values = json_decode($request->getContent());
         $user->setRoles(['ROLE_ADMIN']);
-        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));      
-        $part = $this->getDoctrine()->getRepository(Partenaire::class)->findAll();
+        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
         if (count($violations))
         {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
         
-        if($user->setPartenaire($part[0]))
+        if($user->setPartenaire($part))
         {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -100,7 +99,7 @@ class AdminController extends FOSRestController
      * )
      * @ParamConverter("dpt", converter="fos_rest.request_body")
      */
-    public function depot(Depot $dpt,Compte $cpt, ConstraintViolationList $violations)
+    public function depot(Depot $dpt,Compte $cpt,ConstraintViolationList $violations)
     {
         if (count($violations)) {
             $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
@@ -110,12 +109,9 @@ class AdminController extends FOSRestController
 
             throw new ResourceValidationException($message);
         }
-        
-        $user = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
-        $part = $this->getDoctrine()->getRepository(Compte::class)->findAll();
-        
-        $dpt->setCaissier($user[0]);
-        $dpt->setCompte($part[0]);
+        $user = $this->getUser();
+        $dpt->setCaissier($user);
+        $dpt->setCompte($cpt);
         $cpt->setDateDepot(new \DateTime());
         $dpt->setDateDepot(new \DateTime());
         $cpt->setMontant($cpt->getMontant()+$dpt->getMontantDepot());
