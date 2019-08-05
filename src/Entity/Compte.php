@@ -24,7 +24,7 @@ class Compte
     /**
      * @ORM\Column(type="bigint")
      */
-    private $montant;
+    private $montant = 0;
 
     /**
      * @ORM\Column(type="datetime")

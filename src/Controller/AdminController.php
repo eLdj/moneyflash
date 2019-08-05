@@ -46,6 +46,9 @@ class AdminController extends FOSRestController
         $part->setCreatedAt(new \DateTime());
         $cmpt->setDateDepot(new \DateTime());
         $user->setRoles(["ROLE_ADMIN"]);
+        $user->setStatut("Actif");
+        $num = random_int(100000, 999999);
+        $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
        
         if (count($violations)) 
@@ -60,6 +63,28 @@ class AdminController extends FOSRestController
         $em->flush();
          return  $this->handleView($this->view($part, Response::HTTP_CREATED));
        
+    }
+    
+    /**
+     * @Rest\Post(
+     *      path = "/compte/{id}",
+     *      name = "new_compte"
+     * )
+     * @ParamConverter("cmpt", converter="fos_rest.request_body")
+     */
+    public function addCompte(Compte $cmpt, Partenaire $part)
+    {
+        $cmpt->setPartenaire($part);
+       
+        $num = random_int(100000, 999999);
+        $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
+        $cmpt->setDateDepot(new \DateTime());
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($cmpt);
+        $em->flush();
+
+        return  $this->handleView($this->view($cmpt, Response::HTTP_CREATED));
     }
     
     /**
