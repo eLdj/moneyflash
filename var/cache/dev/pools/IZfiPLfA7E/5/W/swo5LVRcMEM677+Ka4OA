@@ -14,7 +14,7 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
                 255,
             ],
             'message' => [
-                1 => 'Vous devez insérer un mot de passe',
+                1 => 'Vous devez saisir une adresse',
             ],
             'groups' => [
                 1 => [

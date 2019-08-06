@@ -7,7 +7,7 @@ return [
     'app_part_create' => [[], ['_controller' => 'App\\Controller\\AdminController::createPart'], [], [['text', '/api/part']], [], []],
     'new_compte' => [['id'], ['_controller' => 'App\\Controller\\AdminController::addCompte'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/compte']], [], []],
     'app_user_create' => [['id'], ['_controller' => 'App\\Controller\\AdminController::addUser'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/partenaires']], [], []],
-    'depot' => [['id'], ['_controller' => 'App\\Controller\\AdminController::depot'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/compte']], [], []],
+    'depot' => [['id'], ['_controller' => 'App\\Controller\\AdminController::depot'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/depot']], [], []],
     'app_part_modif' => [['id'], ['_controller' => 'App\\Controller\\AdminController::editpart'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/statut']], [], []],
     'compte_index' => [[], ['_controller' => 'App\\Controller\\CompteController::index'], [], [['text', '/compte/']], [], []],
     'compte_new' => [[], ['_controller' => 'App\\Controller\\CompteController::new'], [], [['text', '/compte/new']], [], []],

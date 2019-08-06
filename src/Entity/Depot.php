@@ -19,6 +19,8 @@ class Depot
 
     /**
      * @ORM\Column(type="bigint")
+     *  /**
+     * @Assert\GreaterThanOrEqual(75000,message="votre dépôt doit être suppérieru à 75000")
      */
     private $montantDepot;
 

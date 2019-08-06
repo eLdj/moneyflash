@@ -7,9 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PartenaireRepository")
+ * @UniqueEntity(fields={"ninea"},message="Cet utilisateur existe déjà")
+ * @UniqueEntity(fields={"telephone"},message="Ce numero de téléphone  existe déjà")
+ * @UniqueEntity(fields={"email"},message="Cet email existe déjà")
  */
 class Partenaire
 {
@@ -21,12 +25,12 @@ class Partenaire
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nomEntreprise;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="ninea",type="string", length=255, unique=true)
+     * @Assert\Regex(
+     *     pattern="/^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\-]*$/",
+     *     match=true,
+     *     message="Entrez un ninea valide"
+     * )
      */
     private $ninea;
 
@@ -41,12 +45,22 @@ class Partenaire
     private $raisonSociale;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="email",type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Vous devez saisir un email")
+     * @Assert\Email(
+     *     message = " '{{ value }}' Cet email n'est pas valide.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="telephone",type="string", length=255, unique=true)
+     * @Assert\Regex(
+     *     pattern="/^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\-]*$/",
+     *     match=true,
+     *     message="Votre numero ne doit pas contenir de lettre"
+     * )
      */
     private $telephone;
 
@@ -77,18 +91,6 @@ class Partenaire
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNomEntreprise(): ?string
-    {
-        return $this->nomEntreprise;
-    }
-
-    public function setNomEntreprise(string $nomEntreprise): self
-    {
-        $this->nomEntreprise = $nomEntreprise;
-
-        return $this;
     }
 
     public function getNinea(): ?string
@@ -141,7 +143,7 @@ class Partenaire
 
     public function getTelephone(): ?string
     {
-        return $this->telephone;
+        return $this->telephoneP;
     }
 
     public function setTelephone(string $telephone): self
@@ -223,42 +225,5 @@ class Partenaire
         }
 
         return $this;
-    }
-
-    
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function setFile(UploadedFile $file = null)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    public function upload()
-    {
-        if(null == $this->file)
-        {
-            return;
-        }
-
-        $name = $this->file->getClientOriginalName();
-        $this->file->move( $this->getUploadRootDir(), $name);
-        $this->url = $name;
-        $this->alt = $name;
-    }
-
-    public function getUploadDir()
-    {
-        return 'uploads/img';
-    }
-
-    protected function getUploadRootDir()
-    {
-        // On retourne le chemin relatif vers l'image pour notre code PHP
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 }

@@ -4,7 +4,11 @@ namespace Symfony\Component\VarExporter\Internal;
 
 return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
     $o = [
-        clone (Registry::$prototypes['Doctrine\\ORM\\Mapping\\Entity'] ?? Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone (($p = &Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'] ?? Registry::p('Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity')),
+        clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
+        clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
+        clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
     ],
     null,
     [
@@ -12,10 +16,45 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
             'repositoryClass' => [
                 'App\\Repository\\UtilisateurRepository',
             ],
+            'fields' => [
+                1 => 'email',
+                [
+                    'email',
+                ],
+                [
+                    'username',
+                ],
+                [
+                    'telephone',
+                ],
+            ],
+            'groups' => [
+                1 => [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'message' => [
+                2 => 'Ce email  existe déjà',
+                'Cet utilisateur existe déjà',
+                'Ce numéro existe déjà',
+            ],
         ],
     ],
     [
         $o[0],
+        $o[1],
+        $o[2],
+        $o[3],
+        $o[4],
     ],
     []
 );

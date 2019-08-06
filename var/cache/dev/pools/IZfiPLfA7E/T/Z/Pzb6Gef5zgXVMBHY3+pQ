@@ -9,8 +9,14 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
     null,
     [
         'stdClass' => [
+            'name' => [
+                'numero',
+            ],
             'type' => [
                 'bigint',
+            ],
+            'unique' => [
+                true,
             ],
         ],
     ],

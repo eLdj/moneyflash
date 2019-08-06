@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity(fields={"email"},message="Ce email  existe déjà")
+ * @UniqueEntity(fields={"username"},message="Cet utilisateur existe déjà")
+ * @UniqueEntity(fields={"telephone"},message="Ce numéro existe déjà")
  */
 class Utilisateur implements UserInterface
 {
@@ -20,7 +25,14 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(name="username",type="string", length=180, unique=true)
+     * 
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Votre username doit comporter au moins {{ limit }} charactéres"
+     * )
+     * @Assert\NotBlank(message="Vous devez inserez un nom d'utilisateur")
+     * 
      */
     private $username;
 
@@ -30,43 +42,68 @@ class Utilisateur implements UserInterface
     private $roles = [];
 
     /**
-     * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @Assert\Regex(
+     *     pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{7,}$/",
+     *     match=true,
+     *     message="Votre mot de passe doit contenir au moins 7 caractères, un majuscule et un caractère spéciale"
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @Assert\NotBlank(message="Vous devez saisir un nom")
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre nom ne doit pas contenir de nombre"
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @Assert\NotBlank(message="Vous devez saisir un prenom")
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre nom ne doit pas contenir de nombre"
+     * )
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @Assert\NotBlank(message="Vous devez saisir une adresse")
      */
     private $adresse;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Vous devez saisir un email")
+     * /**
+     * @Assert\Email(
+     *     message = " '{{ value }}' Cet email n'est pas valide.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez insérer un mot de passe")
+     * @ORM\Column(name="telephone",type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Vous devez insérer un téléphone")
+     * @Assert\Regex(
+     *     pattern="/^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\-]*$/",
+     *     match=true,
+     *     message="Votre numero ne doit pas contenir de lettre"
+     * )
      */
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $statut;
 

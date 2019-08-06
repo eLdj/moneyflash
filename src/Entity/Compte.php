@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompteRepository")
+ * * @UniqueEntity(fields={"numero"},message="Ce numéro de compte existe déjà")
  * ApiResource()
  */
 class Compte
@@ -32,7 +34,7 @@ class Compte
     private $dateDepot;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(name="numero",type="bigint", unique=true)
      */
     private $numero;
 
