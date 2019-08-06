@@ -64,10 +64,10 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'nomEntreprise', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'ninea', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'raisonSociale', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'comptes', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'utilisateurs', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'file'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'ninea', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'siege', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'raisonSociale', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'emailP', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'telephoneP', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'comptes', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'utilisateurs'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'nomEntreprise', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'ninea', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'raisonSociale', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'comptes', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'utilisateurs', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'file'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'ninea', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'siege', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'raisonSociale', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'emailP', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'telephoneP', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'createdAt', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'comptes', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'utilisateurs'];
     }
 
     /**
@@ -191,28 +191,6 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getNomEntreprise(): ?string
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNomEntreprise', []);
-
-        return parent::getNomEntreprise();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setNomEntreprise(string $nomEntreprise): \App\Entity\Partenaire
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNomEntreprise', [$nomEntreprise]);
-
-        return parent::setNomEntreprise($nomEntreprise);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getNinea(): ?string
     {
 
@@ -235,23 +213,23 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getAdresse(): ?string
+    public function getSiege(): ?string
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdresse', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSiege', []);
 
-        return parent::getAdresse();
+        return parent::getSiege();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setAdresse(string $adresse): \App\Entity\Partenaire
+    public function setSiege(string $siege): \App\Entity\Partenaire
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdresse', [$adresse]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSiege', [$siege]);
 
-        return parent::setAdresse($adresse);
+        return parent::setSiege($siege);
     }
 
     /**
@@ -279,45 +257,45 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getEmail(): ?string
+    public function getEmailP(): ?string
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailP', []);
 
-        return parent::getEmail();
+        return parent::getEmailP();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setEmail(string $email): \App\Entity\Partenaire
+    public function setEmailP(string $emailP): \App\Entity\Partenaire
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailP', [$emailP]);
 
-        return parent::setEmail($email);
+        return parent::setEmailP($emailP);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getTelephone(): ?string
+    public function getTelephoneP(): ?string
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelephone', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelephoneP', []);
 
-        return parent::getTelephone();
+        return parent::getTelephoneP();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setTelephone(string $telephone): \App\Entity\Partenaire
+    public function setTelephoneP(string $telephoneP): \App\Entity\Partenaire
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelephone', [$telephone]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelephoneP', [$telephoneP]);
 
-        return parent::setTelephone($telephone);
+        return parent::setTelephoneP($telephoneP);
     }
 
     /**
@@ -406,50 +384,6 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUtilisateur', [$utilisateur]);
 
         return parent::removeUtilisateur($utilisateur);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFile()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFile', []);
-
-        return parent::getFile();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setFile(\Symfony\Component\HttpFoundation\File\UploadedFile $file = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFile', [$file]);
-
-        return parent::setFile($file);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function upload()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'upload', []);
-
-        return parent::upload();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getUploadDir()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUploadDir', []);
-
-        return parent::getUploadDir();
     }
 
 }

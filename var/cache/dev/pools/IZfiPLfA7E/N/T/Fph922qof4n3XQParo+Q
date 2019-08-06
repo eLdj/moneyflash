@@ -5,8 +5,8 @@ namespace Symfony\Component\VarExporter\Internal;
 return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
     $o = [
         clone (($p = &Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Vich\\UploaderBundle\\Mapping\\Annotation\\Uploadable'] ?? Registry::p('Vich\\UploaderBundle\\Mapping\\Annotation\\Uploadable')),
         clone ($p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'] ?? Registry::p('Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity')),
-        clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
         clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
         clone $p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'],
     ],
@@ -16,9 +16,13 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
             'repositoryClass' => [
                 'App\\Repository\\UtilisateurRepository',
             ],
+            'message' => [
+                2 => 'Ce email  existe déjà',
+                'Cet utilisateur existe déjà',
+                'Ce numéro existe déjà',
+            ],
             'fields' => [
-                1 => 'email',
-                [
+                2 => [
                     'email',
                 ],
                 [
@@ -29,7 +33,7 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
                 ],
             ],
             'groups' => [
-                1 => [
+                2 => [
                     'Default',
                 ],
                 [
@@ -38,14 +42,6 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
                 [
                     'Default',
                 ],
-                [
-                    'Default',
-                ],
-            ],
-            'message' => [
-                2 => 'Ce email  existe déjà',
-                'Cet utilisateur existe déjà',
-                'Ce numéro existe déjà',
             ],
         ],
     ],

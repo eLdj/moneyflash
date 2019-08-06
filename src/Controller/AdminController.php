@@ -34,12 +34,13 @@ class AdminController extends FOSRestController
      */
     public function createPart(Request $request,Partenaire $part,Utilisateur $user,Compte $cmpt,ValidatorInterface $validator, ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
     {
-       
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
+    
         $user->setPartenaire($part);
         $cmpt->setPartenaire($part);
         $part->setCreatedAt(new \DateTime());
         $cmpt->setDateDepot(new \DateTime());
-        $user->setRoles(["ROLE_ADMIN"]);
+        $user->setRoles(["ROLE_SUPER_ADMIN_PARTENAIRE"]);
         $user->setStatut("Actif");
         $num = random_int(100000, 999999);
         $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
@@ -62,7 +63,7 @@ class AdminController extends FOSRestController
         $em->persist($user);
         $em->persist($part);
         $em->flush();
-         return  $this->handleView($this->view($part, Response::HTTP_CREATED));
+         return  $this->handleView($this->view('Enregistrement réussi', Response::HTTP_CREATED));
        
     }
     
@@ -75,6 +76,7 @@ class AdminController extends FOSRestController
      */
     public function addCompte(Compte $cmpt,Partenaire $part,ConstraintViolationList $violations,ValidatorInterface $validator)
     {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
         if (count($violations))
         {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
@@ -97,20 +99,23 @@ class AdminController extends FOSRestController
         $em->persist($cmpt);
         $em->flush();
 
-        return  $this->handleView($this->view($cmpt, Response::HTTP_CREATED));
+        return  $this->handleView($this->view('Compte ajouté avec succés', Response::HTTP_CREATED));
     }
     
     /**
      * @Rest\Post(
-     *    path = "/addUser/{id}",
-     *    name = "app_user_create"
+     *    path = "/adduser",
+     *    name = "app_user_admin_create"
      * )
      *  @ParamConverter("user", converter="fos_rest.request_body")
      */
-    public function addUser(Request $request,Partenaire $part,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
+    public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
     {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN_PARTENAIRE', null, 'Vous n\'avez accés aux ajout d\'utilisateur partenaire');
         $values = json_decode($request->getContent());
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setStatut("Actif");
+    
         $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
         
         if (count($violations))
@@ -125,15 +130,19 @@ class AdminController extends FOSRestController
                 'Content-Type' => 'application/json'
             ]);
         }
-        
-        if($user->setPartenaire($part))
+        $part= $this->getUser()->getPartenaire();
+        if($part)
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $user->setPartenaire($part);
         }
-       
-        return $this->view($user, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        else{
+            $user->setPartenaire(null);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return $this->view('Utilisateur ajouté', Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
       
     }
 
@@ -148,10 +157,13 @@ class AdminController extends FOSRestController
      */
     public function depot(Depot $dpt,Compte $cpt,ConstraintViolationList $violations,ValidatorInterface $validator)
     {
+        $this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'êtes pas caissier');
+        
         if (count($violations))
         {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
+        
         $errors = $validator->validate($dpt);
         if(count($errors))
         {
@@ -193,7 +205,7 @@ class AdminController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->flush();
      
-        return  $this->handleView($this->view($parte, Response::HTTP_CREATED));
+        return  $this->handleView($this->view('Statut changé', Response::HTTP_CREATED));
     }
 
 }

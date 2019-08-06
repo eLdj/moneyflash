@@ -12,8 +12,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PartenaireRepository")
  * @UniqueEntity(fields={"ninea"},message="Cet utilisateur existe déjà")
- * @UniqueEntity(fields={"telephone"},message="Ce numero de téléphone  existe déjà")
- * @UniqueEntity(fields={"email"},message="Cet email existe déjà")
  */
 class Partenaire
 {
@@ -37,7 +35,7 @@ class Partenaire
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $adresse;
+    private $siege;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,24 +43,24 @@ class Partenaire
     private $raisonSociale;
 
     /**
-     * @ORM\Column(name="email",type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un email")
      * @Assert\Email(
      *     message = " '{{ value }}' Cet email n'est pas valide.",
      *     checkMX = true
      * )
      */
-    private $email;
+    private $emailP;
 
     /**
-     * @ORM\Column(name="telephone",type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern="/^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\-]*$/",
      *     match=true,
      *     message="Votre numero ne doit pas contenir de lettre"
      * )
      */
-    private $telephone;
+    private $telephoneP;
 
     /**
      * @ORM\Column(type="datetime")
@@ -78,8 +76,6 @@ class Partenaire
      * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="partenaire")
      */
     private $utilisateurs;
-
-    private $file;
 
     public function __construct()
     {
@@ -105,14 +101,14 @@ class Partenaire
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getSiege(): ?string
     {
-        return $this->adresse;
+        return $this->siege;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setSiege(string $siege): self
     {
-        $this->adresse = $adresse;
+        $this->siege = $siege;
 
         return $this;
     }
@@ -129,26 +125,26 @@ class Partenaire
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmailP(): ?string
     {
-        return $this->email;
+        return $this->emailP;
     }
 
-    public function setEmail(string $email): self
+    public function setEmailP(string $emailP): self
     {
-        $this->email = $email;
+        $this->emailP = $emailP;
 
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getTelephoneP(): ?string
     {
         return $this->telephoneP;
     }
 
-    public function setTelephone(string $telephone): self
+    public function setTelephoneP(string $telephoneP): self
     {
-        $this->telephone = $telephone;
+        $this->telephoneP = $telephoneP;
 
         return $this;
     }

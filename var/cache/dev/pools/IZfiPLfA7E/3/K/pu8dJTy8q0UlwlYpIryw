@@ -1,0 +1,34 @@
+<?php
+
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (($p = &Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Column'] ?? Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\Regex'] ?? Registry::p('Symfony\\Component\\Validator\\Constraints\\Regex')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'length' => [
+                255,
+            ],
+            'message' => [
+                1 => 'Votre numero ne doit pas contenir de lettre',
+            ],
+            'pattern' => [
+                1 => '/^(\\+[1-9][0-9]*(\\([0-9]*\\)|-[0-9]*-))?[0]?[1-9][0-9\\-]*$/',
+            ],
+            'groups' => [
+                1 => [
+                    'Default',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+);

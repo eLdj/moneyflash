@@ -12,9 +12,6 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
             'length' => [
                 255,
             ],
-            'unique' => [
-                true,
-            ],
         ],
     ],
     [

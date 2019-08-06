@@ -9,6 +9,7 @@ return [
     false, // $matchHost
     [ // $staticRoutes
         '/api/part' => [[['_route' => 'app_part_create', '_controller' => 'App\\Controller\\AdminController::createPart'], null, ['POST' => 0], null, false, false, null]],
+        '/api/adduser' => [[['_route' => 'app_user_admin_create', '_controller' => 'App\\Controller\\AdminController::addUser'], null, ['POST' => 0], null, false, false, null]],
         '/compte' => [[['_route' => 'compte_index', '_controller' => 'App\\Controller\\CompteController::index'], null, ['GET' => 0], null, true, false, null]],
         '/compte/new' => [[['_route' => 'compte_new', '_controller' => 'App\\Controller\\CompteController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/api/register' => [[['_route' => 'register', '_controller' => 'App\\Controller\\SecurityController::register'], null, ['POST' => 0], null, false, false, null]],
@@ -16,6 +17,7 @@ return [
             [['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::login'], null, ['POST' => 0], null, false, false, null],
             [['_route' => 'api_login_check'], null, null, null, false, false, null],
         ],
+        '/api/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -23,35 +25,33 @@ return [
                 .'|/api(?'
                     .'|/(?'
                         .'|compte/([^/]++)(*:68)'
-                        .'|partenaires/([^/]++)(*:95)'
-                        .'|depot/([^/]++)(*:116)'
-                        .'|statut/([^/]++)(*:139)'
+                        .'|depot/([^/]++)(*:89)'
+                        .'|statut/([^/]++)(*:111)'
                     .')'
-                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:176)'
+                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:148)'
                     .'|/(?'
-                        .'|docs(?:\\.([^/]++))?(*:207)'
-                        .'|contexts/(.+)(?:\\.([^/]++))?(*:243)'
+                        .'|docs(?:\\.([^/]++))?(*:179)'
+                        .'|contexts/(.+)(?:\\.([^/]++))?(*:215)'
                     .')'
                 .')'
                 .'|/compte/([^/]++)(?'
-                    .'|(*:272)'
-                    .'|/edit(*:285)'
-                    .'|(*:293)'
+                    .'|(*:244)'
+                    .'|/edit(*:257)'
+                    .'|(*:265)'
                 .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
         35 => [[['_route' => '_twig_error_test', '_controller' => 'twig.controller.preview_error::previewErrorPageAction', '_format' => 'html'], ['code', '_format'], null, null, false, true, null]],
         68 => [[['_route' => 'new_compte', '_controller' => 'App\\Controller\\AdminController::addCompte'], ['id'], ['POST' => 0], null, false, true, null]],
-        95 => [[['_route' => 'app_user_create', '_controller' => 'App\\Controller\\AdminController::addUser'], ['id'], ['POST' => 0], null, false, true, null]],
-        116 => [[['_route' => 'depot', '_controller' => 'App\\Controller\\AdminController::depot'], ['id'], ['PUT' => 0], null, false, true, null]],
-        139 => [[['_route' => 'app_part_modif', '_controller' => 'App\\Controller\\AdminController::editpart'], ['id'], ['PUT' => 0], null, false, true, null]],
-        176 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
-        207 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
-        243 => [[['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null]],
-        272 => [[['_route' => 'compte_show', '_controller' => 'App\\Controller\\CompteController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        285 => [[['_route' => 'compte_edit', '_controller' => 'App\\Controller\\CompteController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        293 => [
+        89 => [[['_route' => 'depot', '_controller' => 'App\\Controller\\AdminController::depot'], ['id'], ['PUT' => 0], null, false, true, null]],
+        111 => [[['_route' => 'app_part_modif', '_controller' => 'App\\Controller\\AdminController::editpart'], ['id'], ['PUT' => 0], null, false, true, null]],
+        148 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
+        179 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
+        215 => [[['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null]],
+        244 => [[['_route' => 'compte_show', '_controller' => 'App\\Controller\\CompteController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        257 => [[['_route' => 'compte_edit', '_controller' => 'App\\Controller\\CompteController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        265 => [
             [['_route' => 'compte_delete', '_controller' => 'App\\Controller\\CompteController::delete'], ['id'], ['DELETE' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

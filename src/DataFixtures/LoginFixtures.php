@@ -21,6 +21,12 @@ class LoginFixtures extends Fixture
         $password = $this->encoder->encodePassword($user, 'admin');
         $user->setRoles(['ROLE_SUPER_ADMIN']);
         $user->setPassword($password);
+        $user->setNom('NDIAYE');
+        $user->setPrenom('El Hadji');
+        $user->setAdresse('SICAP');
+        $user->setEmail('eldji22@hotmail.fr');
+        $user->setStatut('-');
+        $user->setTelephone("774456858");
     
         $manager->persist($user);
         $manager->flush();
