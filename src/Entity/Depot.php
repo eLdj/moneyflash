@@ -38,6 +38,11 @@ class Depot
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="depots")
      */
     private $compte;
+    
+    public function __construct()
+    {
+        $this->dateDepot = new \DateTime('now');
+    }
 
     public function getId(): ?int
     {
@@ -58,7 +63,7 @@ class Depot
 
     public function getDateDepot(): ?\DateTimeInterface
     {
-        return $this->dateDepot;
+        return $this->dateDepot = new \DateTime('now');
     }
 
     public function setDateDepot(\DateTimeInterface $dateDepot): self

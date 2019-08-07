@@ -21,52 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @Route("/api")
  */
 class AdminController extends FOSRestController
-{   
-
-    /**
-     * @Rest\Post(
-     *    path = "/part",
-     *    name = "app_part_create"
-     * )
-     * @ParamConverter("part", converter="fos_rest.request_body")
-     * @ParamConverter("user", converter="fos_rest.request_body")
-     * @ParamConverter("cmpt", converter="fos_rest.request_body")
-     */
-    public function createPart(Request $request,Partenaire $part,Utilisateur $user,Compte $cmpt,ValidatorInterface $validator, ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
-    
-        $user->setPartenaire($part);
-        $cmpt->setPartenaire($part);
-        $part->setCreatedAt(new \DateTime());
-        $cmpt->setDateDepot(new \DateTime());
-        $user->setRoles(["ROLE_SUPER_ADMIN_PARTENAIRE"]);
-        $user->setStatut("Actif");
-        $num = random_int(100000, 999999);
-        $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
-        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
-       
-        if (count($violations)) 
-        {
-            return $this->view($violations, Response::HTTP_BAD_REQUEST);
-        }
-        $errors = $validator->validate($user);
-        if(count($errors))
-        {
-            return new Response($errors, 500, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        $em = $this->getDoctrine()->getManager();
-        
-        $em->persist($cmpt);
-        $em->persist($user);
-        $em->persist($part);
-        $em->flush();
-         return  $this->handleView($this->view('Enregistrement réussi', Response::HTTP_CREATED));
-       
-    }
-    
+{      
     /**
      * @Rest\Post(
      *      path = "/compte/{id}",
@@ -74,13 +29,9 @@ class AdminController extends FOSRestController
      * )
      * @ParamConverter("cmpt", converter="fos_rest.request_body")
      */
-    public function addCompte(Compte $cmpt,Partenaire $part,ConstraintViolationList $violations,ValidatorInterface $validator)
+    public function addCompte(Compte $cmpt,Partenaire $part,ValidatorInterface $validator)
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
-        if (count($violations))
-        {
-            return $this->view($violations, Response::HTTP_BAD_REQUEST);
-        }
         $errors = $validator->validate($cmpt);
         if(count($errors))
         {
@@ -112,11 +63,10 @@ class AdminController extends FOSRestController
     public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN_PARTENAIRE', null, 'Vous n\'avez accés aux ajout d\'utilisateur partenaire');
-        $values = json_decode($request->getContent());
         $user->setRoles(['ROLE_ADMIN']);
         $user->setStatut("Actif");
     
-        $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
+        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         
         if (count($violations))
         {
@@ -131,6 +81,7 @@ class AdminController extends FOSRestController
             ]);
         }
         $part= $this->getUser()->getPartenaire();
+        
         if($part)
         {
             $user->setPartenaire($part);
@@ -155,15 +106,8 @@ class AdminController extends FOSRestController
      * )
      * @ParamConverter("dpt", converter="fos_rest.request_body")
      */
-    public function depot(Depot $dpt,Compte $cpt,ConstraintViolationList $violations,ValidatorInterface $validator)
-    {
-        $this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'êtes pas caissier');
-        
-        if (count($violations))
-        {
-            return $this->view($violations, Response::HTTP_BAD_REQUEST);
-        }
-        
+    public function depot(Depot $dpt,Compte $cpt,ValidatorInterface $validator)
+    {   
         $errors = $validator->validate($dpt);
         if(count($errors))
         {
@@ -171,19 +115,18 @@ class AdminController extends FOSRestController
                 'Content-Type' => 'application/json'
             ]);
         }
-        $user = $this->getUser();
-        $dpt->setCaissier($user);
-        $dpt->setCompte($cpt);
-        $cpt->setDateDepot(new \DateTime());
-        $dpt->setDateDepot(new \DateTime());
-        $cpt->setMontant($cpt->getMontant()+$dpt->getMontantDepot());
-        
+            $user = $this->getUser();
+            $dpt->setCaissier($user);
+            $dpt->setCompte($cpt);
+            $cpt->setDateDepot(new \DateTime());
+            $dpt->setDateDepot(new \DateTime());
+            $cpt->setMontant($cpt->getMontant()+$dpt->getMontantDepot());
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($dpt);
         $em->flush();
 
         return $this->handleView($this->view("Depot effectué avec succés", Response::HTTP_CREATED));
-
     }
 
     /** 

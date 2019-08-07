@@ -12,13 +12,11 @@ class PartType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nomEntreprise')
             ->add('ninea')
-            ->add('adresse')
+            ->add('siege')
             ->add('raisonSociale')
-            ->add('email')
-            ->add('telephone')
-            ->add('createdAt')
+            ->add('emailP')
+            ->add('telephoneP')
         ;
     }
 
@@ -26,6 +24,7 @@ class PartType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Partenaire::class,
+            'csrf_protection'=>false
         ]);
     }
 }

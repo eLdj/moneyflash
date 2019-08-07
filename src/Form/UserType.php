@@ -2,14 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Partenaire;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use App\Entity\Partenaire;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserType extends AbstractType
 {
@@ -17,7 +18,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('roles')
             ->add('password')
             ->add('nom')
             ->add('prenom')
@@ -25,19 +25,17 @@ class UserType extends AbstractType
             ->add('email')
             ->add('telephone')
             ->add('statut')
-            ->add('partenaire', EntityType::class,[
-                'class'=>Partenaire::class,
-                'label' => false])
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('partenaire',EntityType::class,[
+                    'class'=> Partenaire::class,
+            ])
+            ->add('imageFile',VichImageType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Utilisateur::class,
-            'csrf_protection' => false,
-            'by_reference' => false
+            'csrf_protection'=>false
         ]);
     }
 }

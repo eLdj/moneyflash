@@ -51,7 +51,7 @@ class Compte
     public function __construct()
     {
         $this->depots = new ArrayCollection();
-        $this->dateDepot = new \DateTime();
+        $this->dateDepot = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -73,7 +73,7 @@ class Compte
 
     public function getDateDepot(): ?\DateTimeInterface
     {
-        return $this->dateDepot;
+        return $this->dateDepot = new \DateTime('now');
     }
 
     public function setDateDepot(\DateTimeInterface $dateDepot): self

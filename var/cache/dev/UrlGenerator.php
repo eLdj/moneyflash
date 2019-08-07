@@ -4,7 +4,6 @@
 
 return [
     '_twig_error_test' => [['code', '_format'], ['_controller' => 'twig.controller.preview_error::previewErrorPageAction', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], []],
-    'app_part_create' => [[], ['_controller' => 'App\\Controller\\AdminController::createPart'], [], [['text', '/api/part']], [], []],
     'new_compte' => [['id'], ['_controller' => 'App\\Controller\\AdminController::addCompte'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/compte']], [], []],
     'app_user_admin_create' => [[], ['_controller' => 'App\\Controller\\AdminController::addUser'], [], [['text', '/api/adduser']], [], []],
     'depot' => [['id'], ['_controller' => 'App\\Controller\\AdminController::depot'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/depot']], [], []],
@@ -14,7 +13,7 @@ return [
     'compte_show' => [['id'], ['_controller' => 'App\\Controller\\CompteController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/compte']], [], []],
     'compte_edit' => [['id'], ['_controller' => 'App\\Controller\\CompteController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/compte']], [], []],
     'compte_delete' => [['id'], ['_controller' => 'App\\Controller\\CompteController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/compte']], [], []],
-    'register' => [[], ['_controller' => 'App\\Controller\\SecurityController::register'], [], [['text', '/api/register']], [], []],
+    'app_inscrit_create' => [[], ['_controller' => 'App\\Controller\\SecurityController::inscrit'], [], [['text', '/api/inscrit']], [], []],
     'login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/api/login_check']], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/api/logout']], [], []],
     'api_entrypoint' => [['index', '_format'], ['_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index' => 'index'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', 'index', 'index', true], ['text', '/api']], [], []],

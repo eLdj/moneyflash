@@ -2,59 +2,79 @@
 
 namespace App\Controller;
 
+use App\Form\UserType;
+use App\Entity\Partenaire;
 use App\Entity\Utilisateur;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\Compte;
+use App\Form\PartType;
+
 /**
  * @Route("/api")
  */
-class SecurityController extends AbstractController
+class SecurityController extends FOSRestController
 {
-     /**
-     * @Route("/register", name="register", methods={"POST"})
+    /**
+     * @Rest\Post(
+     *    path = "/inscrit",
+     *    name = "app_inscrit_create"
+     * )
+     * @Rest\View(StatusCode = 201)
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
+    public function inscrit(Request $request,ValidatorInterface $validator,UserPasswordEncoderInterface $passwordEncoder)
     {
-        $values = json_decode($request->getContent());
-        if(isset($values->username,$values->password)) {
-            $user = new Utilisateur();
-            $user->setUsername($values->username);
-            $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
-            $user->setRoles($user->getRoles());
-            
-            $errors = $validator->validate($user);
-            if(count($errors)) {
-                $errors = $serializer->serialize($errors, 'json');
-                return new Response($errors, 500, [
-                    'Content-Type' => 'application/json'
-                ]);
-            }
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $data = json_decode($request->getContent(),true);
+        $user = new Utilisateur();
+        $cmpt = new Compte();
+        $part = new Partenaire();
+         
+        $form = $this->createForm(UserType::class,$user);
+        $form->handleRequest($request);
+        if(!$data)
+        {
+            $data = $request->request->all();
+            $file = $request->files->all()['imageFile'];      
+        } 
+        $form->submit($data);
         
+        $form = $this->createForm(PartType::class,$part);   
+        $form->handleRequest($request); 
+        $form->submit($data);
 
-            $data = [
-                'status' => 201,
-                'message' => 'L\'utilisateur a été créé'
-            ];
-
-            return new JsonResponse($data, 201);
+        $num = random_int(100000, 999999);  
+        $errors = $validator->validate($user);
+             
+        if(count($errors))
+        {
+            return new Response($errors, 500, [
+            'Content-Type' => 'application/json'
+            ]);
         }
-        $data = [
-            'status' => 500,
-            'message' => 'Vous devez renseigner les clés username et password'
-        ];
-        return new JsonResponse($data, 500);
+       
+        $cmpt->setPartenaire($part);
+        $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
+        if($form->isSubmitted())
+        {
+            $user->setRoles(["ROLE_SUPER_ADMIN_PARTENAIRE"]);
+            $user->setImageFile($file);
+            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword())); 
+            $user->setPartenaire($part);    
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($part);
+        $em->persist($cmpt);
+        $em->persist($user);
+        $em->flush();
+        return $this->handleView($this->view('Enregistrement réussi', Response::HTTP_CREATED));
     }
-
-
+      
     /**
      * @Route("/login_check", name="login", methods={"POST"})
      */

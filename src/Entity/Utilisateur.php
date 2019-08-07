@@ -4,11 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
  * @Vich\Uploadable
@@ -125,7 +129,16 @@ class Utilisateur implements UserInterface
     private $image;
 
     /**
-     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     * @Vich\UploadableField(mapping="users_image", fileNameProperty="image")
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {
+     *         "image/jpeg",
+     *         "image/pjpeg",
+     *         "image/png",
+     *     },
+     * mimeTypesMessage = "Veuillez saisir un bon format d\'image"
+     * )
      * @var File
      */
     private $imageFile;
@@ -141,16 +154,16 @@ class Utilisateur implements UserInterface
         $this->depots = new ArrayCollection();
     }
 
-    public function setImageFile(File $image = null)
+    public function setImageFile(File $image = null): void
     {
         $this->imageFile = $image;
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
         // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
+        if ($this->imageFile instanceof UploadedFile) {
             // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
+            $this->updatedAt = new \DateTime();
         }
     }
 

@@ -4,8 +4,8 @@ fos_rest:
         default_format: json
         include_format: false
     body_listener: true
-    
     format_listener:
+        enabled: true
         rules:
             - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json ] }
     param_fetcher_listener: 'force'
@@ -20,3 +20,4 @@ fos_rest:
         validation_errors_argument: violations
     serializer:
         serialize_null: true
+        

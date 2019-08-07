@@ -8,11 +8,10 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/api/part' => [[['_route' => 'app_part_create', '_controller' => 'App\\Controller\\AdminController::createPart'], null, ['POST' => 0], null, false, false, null]],
         '/api/adduser' => [[['_route' => 'app_user_admin_create', '_controller' => 'App\\Controller\\AdminController::addUser'], null, ['POST' => 0], null, false, false, null]],
         '/compte' => [[['_route' => 'compte_index', '_controller' => 'App\\Controller\\CompteController::index'], null, ['GET' => 0], null, true, false, null]],
         '/compte/new' => [[['_route' => 'compte_new', '_controller' => 'App\\Controller\\CompteController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        '/api/register' => [[['_route' => 'register', '_controller' => 'App\\Controller\\SecurityController::register'], null, ['POST' => 0], null, false, false, null]],
+        '/api/inscrit' => [[['_route' => 'app_inscrit_create', '_controller' => 'App\\Controller\\SecurityController::inscrit'], null, ['POST' => 0], null, false, false, null]],
         '/api/login_check' => [
             [['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::login'], null, ['POST' => 0], null, false, false, null],
             [['_route' => 'api_login_check'], null, null, null, false, false, null],
