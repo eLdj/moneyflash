@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Depot;
 use App\Entity\Compte;
 use App\Entity\Partenaire;
+use Twig\Profiler\Profile;
 use App\Entity\Utilisateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @Route("/api")
  */
 class AdminController extends FOSRestController
-{      
+{ 
+         
     /**
      * @Rest\Post(
      *      path = "/compte/{id}",
@@ -62,7 +64,6 @@ class AdminController extends FOSRestController
      */
     public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN_PARTENAIRE', null, 'Vous n\'avez accés aux ajout d\'utilisateur partenaire');
         $user->setRoles(['ROLE_ADMIN']);
         $user->setStatut("Actif");
     
@@ -108,6 +109,7 @@ class AdminController extends FOSRestController
      */
     public function depot(Depot $dpt,Compte $cpt,ValidatorInterface $validator)
     {   
+        $this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'avez accés aux dépot');
         $errors = $validator->validate($dpt);
         if(count($errors))
         {
@@ -139,6 +141,7 @@ class AdminController extends FOSRestController
     */
     public function editpart(Utilisateur $parte,Utilisateur $newparte, ConstraintViolationList $violations)
     {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez pas accés aux Blocage d\'utilisateur');
         if (count($violations))
         {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
@@ -150,5 +153,27 @@ class AdminController extends FOSRestController
      
         return  $this->handleView($this->view('Statut changé', Response::HTTP_CREATED));
     }
+
+    // /**
+    //  * @Rest\Post(
+    //  *      path="/profil",
+    //  *      name="profil"
+    //  * )
+    //  */
+    // public function addProfil(Request $request)
+    // {
+    //     $profil= new Profil();
+    //     $form=$this->createForm(ProfilType::class,$profil);
+    //     $data=json_decode($request->getContent(),true);
+    //     $form->submit($data);
+        
+    //     if($form->isSubmitted() && $form->isValid()){
+    //         $em=$this->getDoctrine()->getManager();
+    //         $em->persist($profil);
+    //         $em->flush();
+    //         return $this->handleView($this->view(['status'=>'ok'],Response::HTTP_CREATED));
+    //     }
+    //     return $this->handleView($this->view($form->getErrors()));
+    // }
 
 }

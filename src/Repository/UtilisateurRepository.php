@@ -36,7 +36,7 @@ class UtilisateurRepository extends ServiceEntityRepository
     }
     
 
-    /*
+    
     public function findOneBySomeField($value): ?Utilisateur
     {
         return $this->createQueryBuilder('u')
@@ -46,5 +46,5 @@ class UtilisateurRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    
 }

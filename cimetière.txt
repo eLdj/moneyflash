@@ -44,3 +44,44 @@
 
 
     $this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'êtes pas caissier');
+
+      // public function updateUser(Utilisateur $user,Request $request, ObjectManager $manager, ValidatorInterface $validator,UserPasswordEncoderInterface $encoder)
+    // {
+      
+    //         if(!$user){
+    //             throw new HttpException(404,'Cet utilisateur n\'existe pas !');
+    //         }
+    //         $form = $this->createForm(UtilisateurType::class,$user);
+    //         $data=json_decode($request->getContent(),true);//si json
+    //         if(!$data){
+    //             $data=$request->request->all();//si non json
+    //         }
+    //         $ancienNom=$user->getImage();//pour le supprimer
+            
+    //         $form->submit($data);
+    //         if(!$form->isSubmitted() || !$form->isValid()){
+    //             return $this->handleView($this->view($validator->validate($form)));
+    //         }
+    //         if($requestFile=$request->files->all()){
+    //             $file=$requestFile['image'];
+    //             if($file->guessExtension()!='png' && $file->guessExtension()!='jpeg'){
+    //                 throw new HttpException(400,'Entrer une image valide !! ');
+    //             }
+    //             $fileName=md5(uniqid()).'.'.$file->guessExtension();//on change le nom du fichier
+    //             $user->setImage($fileName);
+    //             $file->move($this->getParameter($this->image_directory),$fileName); //definir le image_directory dans service.yaml
+    //             $ancienPhoto=$this->getParameter($this->image_directory)."/".$ancienNom;
+    //             if($ancienNom){
+    //                unlink($ancienPhoto);//supprime l'ancienne 
+    //             }
+    //         }
+    //         $hash=$encoder->encodePassword($user, $user->getPassword());
+    //         $user->setPassword($hash);
+    //         $manager->persist($user); 
+    //         $manager->flush();
+    //         $afficher = [
+    //             $this->status => 200,
+    //             $this->message => 'L\'utilisateur a été correctement modifié !'
+    //         ];
+    //         return $this->handleView($this->view($afficher,Response::HTTP_OK));
+    // }
