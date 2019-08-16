@@ -459,6 +459,7 @@
   </parameters>
   <services>
     <service id="service_container" class="Symfony\Component\DependencyInjection\ContainerInterface" public="true" synthetic="true"/>
+    <service id="app.user_checker" class="App\Entity\UserCheckers" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\AdminController" class="App\Controller\AdminController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
@@ -474,13 +475,6 @@
     </service>
     <service id="App\Controller\TransfertController" class="App\Controller\TransfertController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
-    </service>
-    <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-    </service>
-    <service id="App\DataFixtures\LoginFixtures" class="App\DataFixtures\LoginFixtures" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-      <argument type="service" id="security.user_password_encoder.generic"/>
     </service>
     <service id="App\Form\CompteType" class="App\Form\CompteType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
@@ -3023,7 +3017,7 @@
     </service>
     <service id="security.firewall.map.config.api" class="Symfony\Bundle\SecurityBundle\Security\FirewallConfig" public="false">
       <argument>api</argument>
-      <argument>security.user_checker</argument>
+      <argument>app.user_checker</argument>
       <argument>.security.request_matcher.p4VlLPC</argument>
       <argument>true</argument>
       <argument>true</argument>
@@ -3065,7 +3059,7 @@
       </argument>
       <argument type="service" id="security.user.provider.concrete.app_user_provider"/>
       <argument>api</argument>
-      <argument type="service" id="security.user_checker"/>
+      <argument type="service" id="app.user_checker"/>
     </service>
     <service id="security.authentication.listener.guard.api" class="Symfony\Component\Security\Guard\Firewall\GuardAuthenticationListener" public="false">
       <tag name="security.remember_me_aware" id="api" provider="security.user.provider.concrete.app_user_provider"/>
@@ -3079,7 +3073,7 @@
     </service>
     <service id="security.authentication.provider.dao.api" class="Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider" public="false">
       <argument type="service" id="security.user.provider.concrete.app_user_provider"/>
-      <argument type="service" id="security.user_checker"/>
+      <argument type="service" id="app.user_checker"/>
       <argument>api</argument>
       <argument type="service" id="security.encoder_factory.generic"/>
       <argument>true</argument>
@@ -5495,16 +5489,7 @@
     <service id="doctrine.fixtures.loader" class="Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader" public="false">
       <argument type="service" id="service_container"/>
       <call method="addFixtures">
-        <argument type="collection">
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\AppFixtures"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\LoginFixtures"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-        </argument>
+        <argument type="collection"/>
       </call>
     </service>
     <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer.users_image" class="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true"/>
@@ -5768,10 +5753,6 @@
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TransfertController" class="App\Controller\TransfertController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\TransfertController" class="App\Controller\TransfertController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\LoginFixtures" class="App\DataFixtures\LoginFixtures" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\LoginFixtures" class="App\DataFixtures\LoginFixtures" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CompteType" class="App\Form\CompteType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\CompteType" class="App\Form\CompteType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\DepotType" class="App\Form\DepotType" autowire="true" abstract="true"/>
@@ -5960,15 +5941,6 @@
         <argument key="validator" type="service" id="validator"/>
       </argument>
     </service>
-    <service id=".service_locator.r.oJVmh" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="passwordEncoder" type="service" id="security.user_password_encoder.generic"/>
-        <argument key="user" type="service" id=".errored..service_locator.r.oJVmh.App\Entity\Utilisateur"/>
-        <argument key="validator" type="service" id="validator"/>
-        <argument key="violations" type="service" id=".errored..service_locator.r.oJVmh.Symfony\Component\Validator\ConstraintViolationList"/>
-      </argument>
-    </service>
     <service id=".service_locator.SZWCsH0" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6010,6 +5982,13 @@
         <argument key="validator" type="service" id="validator"/>
       </argument>
     </service>
+    <service id=".service_locator.8CvDPsA" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="part" type="service" id=".errored..service_locator.8CvDPsA.App\Entity\Partenaire"/>
+      </argument>
+    </service>
     <service id=".service_locator.uVQN3xu" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6019,11 +5998,17 @@
         <argument key="userRepo" type="service" id="App\Repository\UtilisateurRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.UbRM5tb" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.GBAKTvA" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="user" type="service" id=".errored..service_locator.GBAKTvA.App\Entity\Utilisateur"/>
+      </argument>
+    </service>
+    <service id=".service_locator.VxcXu2A" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addCompte" type="service" id=".service_locator.tjE3b0C"/>
-        <argument key="App\Controller\AdminController::addUser" type="service" id=".service_locator.r.oJVmh"/>
         <argument key="App\Controller\AdminController::depot" type="service" id=".service_locator.SZWCsH0"/>
         <argument key="App\Controller\AdminController::editpart" type="service" id=".service_locator.Oy.nOIY"/>
         <argument key="App\Controller\AdminController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
@@ -6031,12 +6016,15 @@
         <argument key="App\Controller\CompteController::edit" type="service" id=".service_locator.M30T2zO"/>
         <argument key="App\Controller\CompteController::index" type="service" id=".service_locator.JfrEn5y"/>
         <argument key="App\Controller\CompteController::show" type="service" id=".service_locator.M30T2zO"/>
+        <argument key="App\Controller\SecurityController::AddUser" type="service" id=".service_locator.6zeVoa2"/>
         <argument key="App\Controller\SecurityController::inscrit" type="service" id=".service_locator.6zeVoa2"/>
+        <argument key="App\Controller\SecurityController::partUpdate" type="service" id=".service_locator.8CvDPsA"/>
+        <argument key="App\Controller\SecurityController::partblock" type="service" id=".service_locator.8CvDPsA"/>
         <argument key="App\Controller\SecurityController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\SecurityController::updateUser" type="service" id=".service_locator.uVQN3xu"/>
+        <argument key="App\Controller\SecurityController::userblock" type="service" id=".service_locator.GBAKTvA"/>
         <argument key="App\Controller\TransfertController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\AdminController:addCompte" type="service" id=".service_locator.tjE3b0C"/>
-        <argument key="App\Controller\AdminController:addUser" type="service" id=".service_locator.r.oJVmh"/>
         <argument key="App\Controller\AdminController:depot" type="service" id=".service_locator.SZWCsH0"/>
         <argument key="App\Controller\AdminController:editpart" type="service" id=".service_locator.Oy.nOIY"/>
         <argument key="App\Controller\AdminController:setViewHandler" type="service" id=".service_locator.l2alLEu"/>
@@ -6044,9 +6032,13 @@
         <argument key="App\Controller\CompteController:edit" type="service" id=".service_locator.M30T2zO"/>
         <argument key="App\Controller\CompteController:index" type="service" id=".service_locator.JfrEn5y"/>
         <argument key="App\Controller\CompteController:show" type="service" id=".service_locator.M30T2zO"/>
+        <argument key="App\Controller\SecurityController:AddUser" type="service" id=".service_locator.6zeVoa2"/>
         <argument key="App\Controller\SecurityController:inscrit" type="service" id=".service_locator.6zeVoa2"/>
+        <argument key="App\Controller\SecurityController:partUpdate" type="service" id=".service_locator.8CvDPsA"/>
+        <argument key="App\Controller\SecurityController:partblock" type="service" id=".service_locator.8CvDPsA"/>
         <argument key="App\Controller\SecurityController:setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\SecurityController:updateUser" type="service" id=".service_locator.uVQN3xu"/>
+        <argument key="App\Controller\SecurityController:userblock" type="service" id=".service_locator.GBAKTvA"/>
         <argument key="App\Controller\TransfertController:setViewHandler" type="service" id=".service_locator.l2alLEu"/>
       </argument>
     </service>
@@ -6316,12 +6308,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.UbRM5tb"/>
+      <argument type="service" id=".service_locator.VxcXu2A"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.UbRM5tb"/>
+      <argument type="service" id=".service_locator.VxcXu2A"/>
     </service>
     <service id="fos_rest.serializer.form_error_handler.inner" class="JMS\Serializer\Handler\FormErrorHandler" public="false">
       <argument>null</argument>
@@ -6364,14 +6356,14 @@
     </service>
     <service id=".errored..service_locator.tjE3b0C.App\Entity\Compte" class="App\Entity\Compte"/>
     <service id=".errored..service_locator.tjE3b0C.App\Entity\Partenaire" class="App\Entity\Partenaire"/>
-    <service id=".errored..service_locator.r.oJVmh.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
-    <service id=".errored..service_locator.r.oJVmh.Symfony\Component\Validator\ConstraintViolationList" class="Symfony\Component\Validator\ConstraintViolationList"/>
     <service id=".errored..service_locator.SZWCsH0.App\Entity\Compte" class="App\Entity\Compte"/>
     <service id=".errored..service_locator.SZWCsH0.App\Entity\Depot" class="App\Entity\Depot"/>
     <service id=".errored..service_locator.Oy.nOIY.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
     <service id=".errored..service_locator.Oy.nOIY.Symfony\Component\Validator\ConstraintViolationList" class="Symfony\Component\Validator\ConstraintViolationList"/>
     <service id=".errored..service_locator.M30T2zO.App\Entity\Compte" class="App\Entity\Compte"/>
+    <service id=".errored..service_locator.8CvDPsA.App\Entity\Partenaire" class="App\Entity\Partenaire"/>
     <service id=".errored..service_locator.uVQN3xu.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
+    <service id=".errored..service_locator.GBAKTvA.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <argument type="service" id=".service_locator.QEjjhkL"/>
       <argument type="collection">
@@ -6636,8 +6628,7 @@
     <service id="security.firewall" alias="debug.security.firewall" public="false"/>
     <service id="Symfony\Component\Security\Core\User\UserProviderInterface" alias="security.user.provider.concrete.app_user_provider"/>
     <service id="security.authentication.session_strategy.api" alias="security.authentication.session_strategy_noop"/>
-    <service id="security.user_checker.api" alias="security.user_checker" public="false"/>
-    <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker" public="false"/>
+    <service id="security.user_checker.api" alias="app.user_checker" public="false"/>
     <service id="Doctrine\DBAL\Driver\Connection" alias="doctrine.dbal.default_connection" public="false"/>
     <service id="Doctrine\DBAL\Connection" alias="doctrine.dbal.default_connection" public="false"/>
     <service id="Doctrine\Common\Persistence\ManagerRegistry" alias="doctrine" public="false"/>
@@ -6760,7 +6751,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.UbRM5tb"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.VxcXu2A"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>

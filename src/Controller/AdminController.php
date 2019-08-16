@@ -55,50 +55,7 @@ class AdminController extends FOSRestController
         return  $this->handleView($this->view('Compte ajouté avec succés', Response::HTTP_CREATED));
     }
     
-    /**
-     * @Rest\Post(
-     *    path = "/adduser",
-     *    name = "app_user_admin_create"
-     * )
-     *  @ParamConverter("user", converter="fos_rest.request_body")
-     */
-    public function addUser(Request $request,Utilisateur $user,ConstraintViolationList $violations, UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
-    {
-        $user->setRoles(['ROLE_ADMIN']);
-        $user->setStatut("Actif");
-    
-        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
-        
-        if (count($violations))
-        {
-            return $this->view($violations, Response::HTTP_BAD_REQUEST);
-        }
-        $errors = $validator->validate($user);
-        
-        if(count($errors))
-        {
-            return new Response($errors, 500, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        $part= $this->getUser()->getPartenaire();
-        
-        if($part)
-        {
-            $user->setPartenaire($part);
-        }
-        else{
-            $user->setPartenaire(null);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-        return $this->view('Utilisateur ajouté', Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
-      
-    }
-
-
+  
     /**
      * @Rest\View(StatusCode = 200)
      * @Rest\Put(

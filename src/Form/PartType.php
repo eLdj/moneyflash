@@ -17,6 +17,7 @@ class PartType extends AbstractType
             ->add('raisonSociale')
             ->add('emailP')
             ->add('telephoneP')
+            ->add('statut')
         ;
     }
 

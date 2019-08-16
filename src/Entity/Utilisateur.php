@@ -91,7 +91,7 @@ class Utilisateur implements UserInterface
      * /**
      * @Assert\Email(
      *     message = " '{{ value }}' Cet email n'est pas valide.",
-     *     checkMX = true
+     *     checkMX = false
      * )
      */
     private $email;

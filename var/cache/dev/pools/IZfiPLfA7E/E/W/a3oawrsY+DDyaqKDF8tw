@@ -32,9 +32,6 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
                     'Default',
                 ],
             ],
-            'checkMX' => [
-                2 => true,
-            ],
         ],
     ],
     [

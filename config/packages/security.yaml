@@ -17,11 +17,13 @@ security:
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+            security: false                  
         api:
             pattern: ^/api
+            user_checker: app.user_checker
             stateless: true
             anonymous: true
+           
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
