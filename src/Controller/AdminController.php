@@ -33,7 +33,7 @@ class AdminController extends FOSRestController
      */
     public function addCompte(Compte $cmpt,Partenaire $part,ValidatorInterface $validator)
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
+       # $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
         $errors = $validator->validate($cmpt);
         if(count($errors))
         {
@@ -66,7 +66,7 @@ class AdminController extends FOSRestController
      */
     public function depot(Depot $dpt,Compte $cpt,ValidatorInterface $validator)
     {   
-        $this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'avez accés aux dépot');
+        #$this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'avez accés aux dépot');
         $errors = $validator->validate($dpt);
         if(count($errors))
         {

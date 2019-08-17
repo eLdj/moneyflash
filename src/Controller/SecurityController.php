@@ -103,9 +103,6 @@ class SecurityController extends FOSRestController
         return $this->handleView($this->view($form->getErrors()));
     }
 
-
-
-
     /**
      * @Rest\Post(
      *    path = "/adduser",
@@ -210,6 +207,7 @@ class SecurityController extends FOSRestController
     {
         $part = $this->getUser()->getPartenaire();
         $verifuser=$user->getPartenaire()->getId();
+       
         $verifpart=null;
         
         if($part)

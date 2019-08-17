@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Compte;
 use App\Entity\Profil;
 use App\Entity\Partenaire;
 use App\Entity\Utilisateur;
@@ -28,8 +29,11 @@ class UserType extends AbstractType
             ->add('statut')
             ->add('partenaire',EntityType::class,[
                     'class'=> Partenaire::class,
-            ])
+                ])
             ->add('imageFile',VichImageType::class)
+            ->add('compte',EntityType::class,[
+                    'class'=> Compte::class,
+                ])
             ;
     }
 
