@@ -84,7 +84,12 @@ class Transaction
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
      */
-    private $compte;
+    private $compteEnv;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
+     */
+    private $compteRet;
 
     public function getId(): ?int
     {
@@ -247,14 +252,26 @@ class Transaction
         return $this;
     }
 
-    public function getCompte(): ?Compte
+    public function getCompteEnv(): ?Compte
     {
-        return $this->compte;
+        return $this->compteEnv;
     }
 
-    public function setCompte(?Compte $compte): self
+    public function setCompteEnv(?Compte $compteEnv): self
     {
-        $this->compte = $compte;
+        $this->compteEnv = $compteEnv;
+
+        return $this;
+    }
+
+    public function getCompteRet(): ?Compte
+    {
+        return $this->compteRet;
+    }
+
+    public function setCompteRet(?Compte $compteRet): self
+    {
+        $this->compteRet = $compteRet;
 
         return $this;
     }

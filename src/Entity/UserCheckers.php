@@ -35,6 +35,6 @@ class UserCheckers implements UserCheckerInterface
     // Créer la class UserChecker, allez dans service.yaml pour définir le service suivant:
     // app.user_checker :
     //      class : App\Entity\UserCheckers
-    // Puis sur security.yaml, faire appel a se service sur notre firewalls de connexion
+    // Puis sur security.yaml, faire appel a ce service sur notre firewalls de connexion
     //      user_checker: app.user_checker 
 }

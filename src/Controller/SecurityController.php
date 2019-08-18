@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -196,6 +197,36 @@ class SecurityController extends FOSRestController
          
         return $this->handleView($this->view($form->getErrors()));
     }
+         
+    /**
+     * @Rest\Post(
+     *      path = "/comptes/{id}",
+     *      name = "new_compte"
+     * )
+     */
+    public function addCompte(Partenaire $part,ValidatorInterface $validator)
+    {
+         $cmpt = new Compte;
+       # $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Vous n\'avez accés aux ajout de partenaire');
+        $errors = $validator->validate($cmpt);
+        if(count($errors))
+        {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+        
+        $num = random_int(100000, 999999);
+        $cmpt->setNumero($part->getId()+$cmpt->getId()+$num);
+        $cmpt->setDateDepot(new \DateTime());
+        $cmpt->setPartenaire($part);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($cmpt);
+        $em->flush();
+
+        return  $this->handleView($this->view('Compte ajouté avec succés', Response::HTTP_CREATED));
+    }
+    
 
     /**
      * @Rest\Get(
@@ -273,7 +304,7 @@ class SecurityController extends FOSRestController
     public function logout()
     {
         // controller can be blank: it will never be executed!
-        throw new Exception('Au revoir');
+        throw new \Exception(200,'Au revoir');
     }
     
 }
