@@ -64,10 +64,10 @@ class Utilisateur extends \App\Entity\Utilisateur implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'username', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'nom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'prenom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'statut', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'partenaire', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'image', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'compte'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'username', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'nom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'prenom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'statut', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'partenaire', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'image', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'compte', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'profil'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'username', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'nom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'prenom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'statut', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'partenaire', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'image', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'compte'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'username', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'nom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'prenom', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'adresse', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'email', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'telephone', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'statut', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'partenaire', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'image', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'compte', '' . "\0" . 'App\\Entity\\Utilisateur' . "\0" . 'profil'];
     }
 
     /**
@@ -527,6 +527,28 @@ class Utilisateur extends \App\Entity\Utilisateur implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCompte', [$compte]);
 
         return parent::setCompte($compte);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProfil(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProfil', []);
+
+        return parent::getProfil();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setProfil(?string $profil): \App\Entity\Utilisateur
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setProfil', [$profil]);
+
+        return parent::setProfil($profil);
     }
 
 }

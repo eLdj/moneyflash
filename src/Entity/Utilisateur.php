@@ -223,7 +223,7 @@ class Utilisateur implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles=[];
+        $roles[] = '';
 
         return array_unique($roles);
     }
