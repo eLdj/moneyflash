@@ -34,6 +34,7 @@ class UserType extends AbstractType
             ->add('compte',EntityType::class,[
                     'class'=> Compte::class,
                 ])
+            ->add('profil')
             ;
     }
 

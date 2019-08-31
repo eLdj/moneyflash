@@ -54,7 +54,7 @@ class Compte
     private $utilisateurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="compte")
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="compteEnv")
      */
     private $transactions;
 
@@ -193,7 +193,7 @@ class Compte
     {
         if (!$this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
-            $transaction->setCompte($this);
+            $transaction->setCompteEnv($this);
         }
 
         return $this;
@@ -204,8 +204,8 @@ class Compte
         if ($this->transactions->contains($transaction)) {
             $this->transactions->removeElement($transaction);
             // set the owning side to null (unless already changed)
-            if ($transaction->getCompte() === $this) {
-                $transaction->setCompte(null);
+            if ($transaction->getCompteEnv() === $this) {
+                $transaction->setCompteEnv(null);
             }
         }
 

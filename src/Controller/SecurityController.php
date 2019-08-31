@@ -6,7 +6,9 @@ use App\Entity\Compte;
 use App\Form\PartType;
 use App\Form\UserType;
 use App\Entity\Partenaire;
+use App\Entity\Transaction;
 use App\Entity\Utilisateur;
+use App\Repository\TransactionRepository;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -26,6 +28,8 @@ class SecurityController extends FOSRestController
 {
     private $actif = 'actif';
     private $bloque = 'bloque';
+    private $contenttype = 'Content-Type';
+    private $json = 'application/json';
     /**
      * @Rest\Post(
      *    path = "/inscrit",
@@ -59,10 +63,10 @@ class SecurityController extends FOSRestController
         if(count($errors))
         {
             return new Response($errors, 500, [
-            'Content-Type' => 'application/json'
+            $this->contenttype => $this->json
             ]);
         }
-    
+        $user->setProfil("SUPER_ADMIN_PARTENAIRE");
         $user->setRoles(["ROLE_SUPER_ADMIN_PARTENAIRE"]);
         $user->setStatut($this->actif);
         $part->setStatut($this->actif);
@@ -118,21 +122,42 @@ class SecurityController extends FOSRestController
         $part =  $this->getUser()->getPartenaire();
          
         $form = $this->createForm(UserType::class,$user);
-       
-            
+
             $data = $request->request->all();
-            $file = $request->files->all()['imageFile'];      
+            $file = $request->files->all()['imageFile'];  
+
         $form->submit($data);        
         $errors = $validator->validate($user);
              
         if(count($errors))
         {
             return new Response($errors, 500, [
-            'Content-Type' => 'application/json'
+                $this->contenttype => $this->json
             ]);
         }
-    
-        $user->setRoles(["ROLE_SUPER_ADMIN_PARTENAIRE"]);
+        
+        
+        if($user->getProfil()=="ADMIN_SYSTEM")
+        {
+            $user->setRoles(["ROLE_ADMIN_SYSTEM"]);
+        }
+        elseif($user->getProfil()=="CAISSIER")
+        {
+            $user->setRoles(["ROLE_CAISSIER"]);
+        }
+        elseif($user->getProfil()=="ADMIN_PARTENAIRE")
+        {
+            $user->setRoles(["ROLE_ADMIN_PARTENAIRE"]);
+        }
+        elseif($user->getProfil()=="USER_PARTENAIRE")
+        {
+            $user->setRoles(["ROLE_USER_PARTENAIRE"]);
+        }
+        else
+        {
+            $user->setRoles([" "]);
+        }
+        
         $user->setStatut($this->actif);
         $user->setImageFile($file);
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword())); 
@@ -212,7 +237,7 @@ class SecurityController extends FOSRestController
         if(count($errors))
         {
             return new Response($errors, 500, [
-                'Content-Type' => 'application/json'
+                $this->contenttype => $this->json
             ]);
         }
         
@@ -267,8 +292,7 @@ class SecurityController extends FOSRestController
         
         return $this->handleView($this->view('Utilisateur mis à jour',Response::HTTP_OK));
     }
-
-
+  
     /**
      * @Rest\Get(
      *  path="/partblock/{id}",
@@ -296,7 +320,12 @@ class SecurityController extends FOSRestController
     /**
      * @Route("/login_check", name="login", methods={"POST"})
      */
-    public function login(){}
+    public function login(){
+        $user = $this->getUser();
+        return $this->json([
+            'roles' => $user->getRoles()
+        ]);
+    }
 
     /**
      * @Route("/logout", name="app_logout", methods={"GET"})

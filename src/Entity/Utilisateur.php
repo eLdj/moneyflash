@@ -149,10 +149,17 @@ class Utilisateur implements UserInterface
      */
     private $updatedAt;
 
+   // @ORM\JoinColumn(name="compte_id", referencedColumnName="id")
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="utilisateurs")
      */
     private $compte;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profil;
 
     public function __construct()
     {
@@ -216,7 +223,7 @@ class Utilisateur implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles=[];
 
         return array_unique($roles);
     }
@@ -383,6 +390,18 @@ class Utilisateur implements UserInterface
     public function setCompte(?Compte $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getProfil(): ?string
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?string $profil): self
+    {
+        $this->profil = $profil;
 
         return $this;
     }

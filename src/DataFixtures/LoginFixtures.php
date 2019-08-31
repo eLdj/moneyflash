@@ -19,7 +19,7 @@ class LoginFixtures extends Fixture
         $user = new Utilisateur();
         $user->setUsername('admin');
         $password = $this->encoder->encodePassword($user, 'admin');
-        $user->setRoles(['ROLE_SUPER_ADMIN']);
+        $user->setRoles(['ROLE_SUPER_ADMIN_SYSTEM']);
         $user->setPassword($password);
         $user->setNom('NDIAYE');
         $user->setPrenom('El Hadji');

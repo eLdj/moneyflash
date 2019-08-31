@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ExpType;
+use App\Form\BenefType;
 use App\Form\TransType;
 use App\Entity\Expediteur;
 use App\Entity\Transaction;
@@ -107,18 +108,22 @@ class TransfertController extends FOSRestController
      *  path = "/retrait/{codesearch}",
      *  name = "retrait"
      * )
+     *  @Rest\View(statusCode = 201)
      */
-    public function retrait(TransactionRepository $exp,$codesearch,ValidatorInterface $validator,ObjectManager $manager)
+    public function retrait(Request $request,TransactionRepository $exp,$codesearch,ValidatorInterface $validator,ObjectManager $manager)
     {
         $cmpt = $this->getUser()->getCompte();
-        
+        $newcin = new Beneficiaire();
+        $form = $this->createForm(BenefType::class, $newcin);
+        $data=$request->request->all();
+        $form->submit($data);
         $trans = $exp->findOneBy(['codeGenere' => $codesearch]);
         $codegen = $trans->getCodeGenere();
         $statut  = $trans->getStatut();
         $comRetrait = $trans->getCommissionRetrait();
         $montantCmpt = $cmpt->getMontant();
         $montantTrans = $trans->getMontantTransfert();
-        
+       
         if(!$trans)
         {
             throw new HttpException(403,'Ce code n\'existe pas !');
@@ -128,7 +133,8 @@ class TransfertController extends FOSRestController
             return  $this->handleView($this->view('Ce code a été déjà utilisé', Response::HTTP_CREATED));
         }
         else
-        {
+        {   
+            $trans->getBeneficiaire()->setCinB($newcin->getCinB());
             $trans->setCompteRet($cmpt);
             $trans->setStatut($this->retire);
             $trans->setDateRetrait(new \DateTime('now'));

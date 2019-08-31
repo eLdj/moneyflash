@@ -34,7 +34,6 @@ class AdminController extends FOSRestController
      */
     public function depot(Depot $dpt,Compte $cpt,ValidatorInterface $validator)
     {   
-        #$this->denyAccessUnlessGranted('ROLE_CAISSIER', null, 'Vous n\'avez accés aux dépot');
         $errors = $validator->validate($dpt);
         if(count($errors))
         {

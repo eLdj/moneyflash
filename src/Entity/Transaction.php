@@ -86,7 +86,7 @@ class Transaction
      */
     private $compteEnv;
 
-     /**
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
      */
     private $compteRet;
@@ -275,4 +275,5 @@ class Transaction
 
         return $this;
     }
+
 }

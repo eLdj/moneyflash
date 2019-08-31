@@ -13,7 +13,7 @@ class BenefType extends AbstractType
     {
         $builder
             ->add('nomCompletB')
-            ->add('adressB')
+            ->add('adresseB')
             ->add('telB')
             ->add('cinB')
         ;
