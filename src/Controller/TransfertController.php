@@ -100,8 +100,9 @@ class TransfertController extends FOSRestController
             $manager->persist($envoie);
             $manager->flush();
 
-            return  $this->handleView($this->view('Envoie réussi', Response::HTTP_CREATED));
-    }
+            return  $this->handleView($this->view($envoie,Response::HTTP_CREATED));
+    
+        }
 
     /**
      * @Rest\Get(
@@ -117,6 +118,7 @@ class TransfertController extends FOSRestController
         $form = $this->createForm(BenefType::class, $newcin);
         $data=$request->request->all();
         $form->submit($data);
+        
         $trans = $exp->findOneBy(['codeGenere' => $codesearch]);
         $codegen = $trans->getCodeGenere();
         $statut  = $trans->getStatut();

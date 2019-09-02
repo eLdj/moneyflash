@@ -33,9 +33,6 @@ class TransType extends AbstractType
             ->add('beneficiaire',EntityType::class,[
                 $class => Beneficiaire::class,
                 ])
-            ->add('compte',EntityType::class,[
-                $class => Compte::class,
-                ])
         ;
     }
 
