@@ -490,16 +490,10 @@
     <service id="App\DataFixtures\TarifsFixtures" class="App\DataFixtures\TarifsFixtures" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
     </service>
-    <service id="App\Form\BenefType" class="App\Form\BenefType" autowire="true" autoconfigure="true">
-      <tag name="form.type"/>
-    </service>
     <service id="App\Form\CompteType" class="App\Form\CompteType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Form\DepotType" class="App\Form\DepotType" autowire="true" autoconfigure="true">
-      <tag name="form.type"/>
-    </service>
-    <service id="App\Form\ExpType" class="App\Form\ExpType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Form\PartType" class="App\Form\PartType" autowire="true" autoconfigure="true">
@@ -835,10 +829,8 @@
         <argument>Vich\UploaderBundle\Form\Type</argument>
       </argument>
       <argument type="collection">
-        <argument>App\Form\BenefType</argument>
         <argument>App\Form\CompteType</argument>
         <argument>App\Form\DepotType</argument>
-        <argument>App\Form\ExpType</argument>
         <argument>App\Form\PartType</argument>
         <argument>App\Form\TransType</argument>
         <argument>App\Form\UserType</argument>
@@ -1147,7 +1139,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension" public="false">
-      <argument type="service" id=".service_locator.3MBje4K"/>
+      <argument type="service" id=".service_locator.kuCEI21"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -5814,14 +5806,10 @@
     <service id=".abstract.instanceof.App\DataFixtures\LoginFixtures" class="App\DataFixtures\LoginFixtures" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\TarifsFixtures" class="App\DataFixtures\TarifsFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\TarifsFixtures" class="App\DataFixtures\TarifsFixtures" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\BenefType" class="App\Form\BenefType" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Form\BenefType" class="App\Form\BenefType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CompteType" class="App\Form\CompteType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\CompteType" class="App\Form\CompteType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\DepotType" class="App\Form\DepotType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\DepotType" class="App\Form\DepotType" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ExpType" class="App\Form\ExpType" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Form\ExpType" class="App\Form\ExpType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\PartType" class="App\Form\PartType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\PartType" class="App\Form\PartType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\TransType" class="App\Form\TransType" autowire="true" abstract="true"/>
@@ -6085,13 +6073,12 @@
         <argument key="user" type="service" id=".errored..service_locator.GBAKTvA.App\Entity\Utilisateur"/>
       </argument>
     </service>
-    <service id=".service_locator..sfGn1x" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.K9GqhYH" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="benef" type="service" id=".errored..service_locator..sfGn1x.App\Entity\Beneficiaire"/>
-        <argument key="envoie" type="service" id=".errored..service_locator..sfGn1x.App\Entity\Transaction"/>
-        <argument key="exp" type="service" id=".errored..service_locator..sfGn1x.App\Entity\Expediteur"/>
+        <argument key="envoie" type="service" id=".errored..service_locator.K9GqhYH.App\Entity\Transaction"/>
         <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="serializer" type="service" id="serializer"/>
         <argument key="trepo" type="service" id="App\Repository\TarifsRepository"/>
         <argument key="validator" type="service" id="validator"/>
       </argument>
@@ -6110,7 +6097,7 @@
         <argument key="user" type="service" id="App\Repository\UtilisateurRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.wHIuYty" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.di9oo.q" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::depot" type="service" id=".service_locator.SZWCsH0"/>
@@ -6131,7 +6118,7 @@
         <argument key="App\Controller\SecurityController::updateUser" type="service" id=".service_locator.uVQN3xu"/>
         <argument key="App\Controller\SecurityController::userblock" type="service" id=".service_locator.GBAKTvA"/>
         <argument key="App\Controller\TransfertController::attcmpt" type="service" id=".service_locator.ROIRRrv"/>
-        <argument key="App\Controller\TransfertController::envoie" type="service" id=".service_locator..sfGn1x"/>
+        <argument key="App\Controller\TransfertController::envoie" type="service" id=".service_locator.K9GqhYH"/>
         <argument key="App\Controller\TransfertController::retrait" type="service" id=".service_locator.VWWlgym"/>
         <argument key="App\Controller\TransfertController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\AdminController:depot" type="service" id=".service_locator.SZWCsH0"/>
@@ -6152,7 +6139,7 @@
         <argument key="App\Controller\SecurityController:updateUser" type="service" id=".service_locator.uVQN3xu"/>
         <argument key="App\Controller\SecurityController:userblock" type="service" id=".service_locator.GBAKTvA"/>
         <argument key="App\Controller\TransfertController:attcmpt" type="service" id=".service_locator.ROIRRrv"/>
-        <argument key="App\Controller\TransfertController:envoie" type="service" id=".service_locator..sfGn1x"/>
+        <argument key="App\Controller\TransfertController:envoie" type="service" id=".service_locator.K9GqhYH"/>
         <argument key="App\Controller\TransfertController:retrait" type="service" id=".service_locator.VWWlgym"/>
         <argument key="App\Controller\TransfertController:setViewHandler" type="service" id=".service_locator.l2alLEu"/>
       </argument>
@@ -6216,13 +6203,11 @@
       <argument type="service" id="debug.argument_resolver.not_tagged_controller.inner"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.3MBje4K" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.kuCEI21" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Form\BenefType" type="service" id="App\Form\BenefType"/>
         <argument key="App\Form\CompteType" type="service" id="App\Form\CompteType"/>
         <argument key="App\Form\DepotType" type="service" id="App\Form\DepotType"/>
-        <argument key="App\Form\ExpType" type="service" id="App\Form\ExpType"/>
         <argument key="App\Form\PartType" type="service" id="App\Form\PartType"/>
         <argument key="App\Form\TransType" type="service" id="App\Form\TransType"/>
         <argument key="App\Form\UserType" type="service" id="App\Form\UserType"/>
@@ -6454,12 +6439,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.wHIuYty"/>
+      <argument type="service" id=".service_locator.di9oo.q"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.wHIuYty"/>
+      <argument type="service" id=".service_locator.di9oo.q"/>
     </service>
     <service id="fos_rest.serializer.form_error_handler.inner" class="JMS\Serializer\Handler\FormErrorHandler" public="false">
       <argument>null</argument>
@@ -6507,9 +6492,7 @@
     <service id=".errored..service_locator.uVQN3xu.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
     <service id=".errored..service_locator.M1tj3io.App\Entity\Partenaire" class="App\Entity\Partenaire"/>
     <service id=".errored..service_locator.GBAKTvA.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
-    <service id=".errored..service_locator..sfGn1x.App\Entity\Beneficiaire" class="App\Entity\Beneficiaire"/>
-    <service id=".errored..service_locator..sfGn1x.App\Entity\Transaction" class="App\Entity\Transaction"/>
-    <service id=".errored..service_locator..sfGn1x.App\Entity\Expediteur" class="App\Entity\Expediteur"/>
+    <service id=".errored..service_locator.K9GqhYH.App\Entity\Transaction" class="App\Entity\Transaction"/>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <argument type="service" id=".service_locator.QEjjhkL"/>
       <argument type="collection">
@@ -6897,7 +6880,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.wHIuYty"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.di9oo.q"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>

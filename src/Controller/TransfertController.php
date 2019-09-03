@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Form\ExpType;
+
 use App\Form\BenefType;
 use App\Form\TransType;
-use App\Entity\Expediteur;
+
 use App\Entity\Transaction;
 use App\Entity\Beneficiaire;
 use App\Repository\TarifsRepository;
@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 /**
@@ -37,14 +38,11 @@ class TransfertController extends FOSRestController
      *  path="/envoi",
      *  name="envoi"
      * )
-     * @ParamConverter("benef", converter="fos_rest.request_body")
-     * @ParamConverter("exp", converter="fos_rest.request_body")
      * @ParamConverter("envoie", converter="fos_rest.request_body")
      */
-    public function envoie(Expediteur $exp,Beneficiaire $benef, Transaction $envoie, Request $request, ObjectManager $manager,TarifsRepository $trepo,ValidatorInterface $validator)
+    public function envoie(Transaction $envoie, Request $request, ObjectManager $manager,TarifsRepository $trepo,ValidatorInterface $validator,SerializerInterface $serializer)
     {
-        $form = $this->createForm(TransType::class, $envoie);
-        $data=$request->request->all();
+        
         $cmpt = $this->getUser()->getCompte();
 
         $envoie->setCreatedAt(new \DateTime('now'));
@@ -55,9 +53,6 @@ class TransfertController extends FOSRestController
                 'Content-Type' => 'application/json'
             ]);
         }
-        $form->submit($data);
-        $form->handleRequest($request);
-
             $montant = $envoie->getMontantTransfert();
             $cmptvalid = $cmpt->getMontant();
             
@@ -90,60 +85,63 @@ class TransfertController extends FOSRestController
             $envoie->setTotalEnvoi($envoie->getFraisTransaction() + $montant);          
             $cmpt->setMontant($cmptvalid - $montant + $comEnvoie);
             $envoie->setStatut($this->envoye); 
-            
-            $envoie->setBeneficiaire($benef);
-            $envoie->setExpediteur($exp);
             $envoie->setCompteEnv($cmpt);       
            
-            $manager->persist($exp);
-            $manager->persist($benef);
             $manager->persist($envoie);
             $manager->flush();
 
-            return  $this->handleView($this->view($envoie,Response::HTTP_CREATED));
+            $data = $serializer->serialize($envoie, 'json', [
+                'groups' => ['envoie']
+            ]);
+
+            return new Response($data, 200, [
+                'Content-Type' => 'application/json'
+            ]);
     
         }
 
     /**
      * @Rest\Get(
-     *  path = "/retrait/{codesearch}",
+     *  path = "/retrait",
      *  name = "retrait"
      * )
      *  @Rest\View(statusCode = 201)
      */
-    public function retrait(Request $request,TransactionRepository $exp,$codesearch,ValidatorInterface $validator,ObjectManager $manager)
+    public function retrait(Request $request,TransactionRepository $exp,ValidatorInterface $validator,ObjectManager $manager)
     {
         $cmpt = $this->getUser()->getCompte();
-        $newcin = new Beneficiaire();
-        $form = $this->createForm(BenefType::class, $newcin);
-        $data=$request->request->all();
-        $form->submit($data);
+
+       $data = json_decode($request->getContent(),true);
         
-        $trans = $exp->findOneBy(['codeGenere' => $codesearch]);
-        $codegen = $trans->getCodeGenere();
-        $statut  = $trans->getStatut();
-        $comRetrait = $trans->getCommissionRetrait();
-        $montantCmpt = $cmpt->getMontant();
-        $montantTrans = $trans->getMontantTransfert();
-       
+        if(!$data){
+
+            $data=$request->request->all();
+        }
+   
+        $trans = $exp->findOneBy(['codeGenere' => $data]);
         if(!$trans)
         {
             throw new HttpException(403,'Ce code n\'existe pas !');
         }
-        elseif($codegen == $codesearch && $statut == $this->retire)
+
+        $statut  = $trans->getStatut();
+
+        if($statut == $this->retire)
         {
             return  $this->handleView($this->view('Ce code a été déjà utilisé', Response::HTTP_CREATED));
         }
-        else
-        {   
-            $trans->getBeneficiaire()->setCinB($newcin->getCinB());
+
+        $comRetrait = $trans->getCommissionRetrait();
+        $montantCmpt = $cmpt->getMontant();
+        $montantTrans = $trans->getMontantTransfert();
+
+            $trans->setCinB($data['cin_b']);
             $trans->setCompteRet($cmpt);
             $trans->setStatut($this->retire);
             $trans->setDateRetrait(new \DateTime('now'));
             $cmpt->setMontant($montantCmpt + $comRetrait + $montantTrans);
             $manager->flush();
-        }
-        
+      
         return  $this->handleView($this->view('Retrait effectué avec succés', Response::HTTP_CREATED));
     }
 

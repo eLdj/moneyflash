@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
@@ -18,26 +19,31 @@ class Transaction
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"envoie", "show"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"envoie", "show"})
      */
     private $codeGenere;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"envoie", "show"})
      */
     private $montantTransfert;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"envoie", "show"})
      */
     private $fraisTransaction;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"envoie", "show"})
      */
     private $totalEnvoi;
 
@@ -58,11 +64,13 @@ class Transaction
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"envoie", "show"})
      */
     private $commissionEnvoie;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
+     * @Groups({"envoie", "show"})
      */
     private $statut;
 
@@ -70,16 +78,6 @@ class Transaction
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateRetrait;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Expediteur", inversedBy="transactions")
-     */
-    private $expediteur;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Beneficiaire", inversedBy="transactions")
-     */
-    private $beneficiaire;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
@@ -90,6 +88,53 @@ class Transaction
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
      */
     private $compteRet;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *  @Groups({"envoie", "show"})
+     */
+    private $nomCompletE;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"envoie", "show"})
+     */
+    private $telE;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"envoie", "show"})
+     */
+    private $adresseE;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"envoie", "show"})
+     */
+    private $cinE;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"envoie", "show"})
+     */
+    private $nomCompletB;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"envoie", "show"})
+     */
+    private $telB;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"envoie", "show"})
+     */
+    private $adresseB;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cinB;
 
     public function getId(): ?int
     {
@@ -228,30 +273,6 @@ class Transaction
         return $this;
     }
 
-    public function getExpediteur(): ?Expediteur
-    {
-        return $this->expediteur;
-    }
-
-    public function setExpediteur(?Expediteur $expediteur): self
-    {
-        $this->expediteur = $expediteur;
-
-        return $this;
-    }
-
-    public function getBeneficiaire(): ?Beneficiaire
-    {
-        return $this->beneficiaire;
-    }
-
-    public function setBeneficiaire(?Beneficiaire $beneficiaire): self
-    {
-        $this->beneficiaire = $beneficiaire;
-
-        return $this;
-    }
-
     public function getCompteEnv(): ?Compte
     {
         return $this->compteEnv;
@@ -272,6 +293,102 @@ class Transaction
     public function setCompteRet(?Compte $compteRet): self
     {
         $this->compteRet = $compteRet;
+
+        return $this;
+    }
+
+    public function getNomCompletE(): ?string
+    {
+        return $this->nomCompletE;
+    }
+
+    public function setNomCompletE(string $nomCompletE): self
+    {
+        $this->nomCompletE = $nomCompletE;
+
+        return $this;
+    }
+
+    public function getTelE(): ?string
+    {
+        return $this->telE;
+    }
+
+    public function setTelE(string $telE): self
+    {
+        $this->telE = $telE;
+
+        return $this;
+    }
+
+    public function getAdresseE(): ?string
+    {
+        return $this->adresseE;
+    }
+
+    public function setAdresseE(?string $adresseE): self
+    {
+        $this->adresseE = $adresseE;
+
+        return $this;
+    }
+
+    public function getCinE(): ?string
+    {
+        return $this->cinE;
+    }
+
+    public function setCinE(string $cinE): self
+    {
+        $this->cinE = $cinE;
+
+        return $this;
+    }
+
+    public function getNomCompletB(): ?string
+    {
+        return $this->nomCompletB;
+    }
+
+    public function setNomCompletB(string $nomCompletB): self
+    {
+        $this->nomCompletB = $nomCompletB;
+
+        return $this;
+    }
+
+    public function getTelB(): ?string
+    {
+        return $this->telB;
+    }
+
+    public function setTelB(string $telB): self
+    {
+        $this->telB = $telB;
+
+        return $this;
+    }
+
+    public function getAdresseB(): ?string
+    {
+        return $this->adresseB;
+    }
+
+    public function setAdresseB(?string $adresseB): self
+    {
+        $this->adresseB = $adresseB;
+
+        return $this;
+    }
+
+    public function getCinB(): ?string
+    {
+        return $this->cinB;
+    }
+
+    public function setCinB(string $cinB): self
+    {
+        $this->cinB = $cinB;
 
         return $this;
     }

@@ -20,6 +20,7 @@ return [
         ],
         '/api/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, ['GET' => 0], null, false, false, null]],
         '/api/envoi' => [[['_route' => 'envoi', '_controller' => 'App\\Controller\\TransfertController::envoie'], null, ['POST' => 0], null, false, false, null]],
+        '/api/retrait' => [[['_route' => 'retrait', '_controller' => 'App\\Controller\\TransfertController::retrait'], null, ['GET' => 0], null, false, false, null]],
         '/api/attcmpt' => [[['_route' => 'attcompt', '_controller' => 'App\\Controller\\TransfertController::attcmpt'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
@@ -42,18 +43,17 @@ return [
                         .'|modif_user/([^/]++)(*:219)'
                         .'|comptes/([^/]++)(*:243)'
                         .'|userblock/([^/]++)(*:269)'
-                        .'|retrait/([^/]++)(*:293)'
                     .')'
-                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:330)'
+                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:306)'
                     .'|/(?'
-                        .'|docs(?:\\.([^/]++))?(*:361)'
-                        .'|contexts/(.+)(?:\\.([^/]++))?(*:397)'
+                        .'|docs(?:\\.([^/]++))?(*:337)'
+                        .'|contexts/(.+)(?:\\.([^/]++))?(*:373)'
                     .')'
                 .')'
                 .'|/compte/([^/]++)(?'
-                    .'|(*:426)'
-                    .'|/edit(*:439)'
-                    .'|(*:447)'
+                    .'|(*:402)'
+                    .'|/edit(*:415)'
+                    .'|(*:423)'
                 .')'
             .')/?$}sDu',
     ],
@@ -68,13 +68,12 @@ return [
         219 => [[['_route' => 'modif_user', '_controller' => 'App\\Controller\\SecurityController::updateUser'], ['id'], ['PUT' => 0], null, false, true, null]],
         243 => [[['_route' => 'new_compte', '_controller' => 'App\\Controller\\SecurityController::addCompte'], ['id'], ['POST' => 0], null, false, true, null]],
         269 => [[['_route' => 'userblock', '_controller' => 'App\\Controller\\SecurityController::userblock'], ['id'], ['GET' => 0], null, false, true, null]],
-        293 => [[['_route' => 'retrait', '_controller' => 'App\\Controller\\TransfertController::retrait'], ['codesearch'], ['GET' => 0], null, false, true, null]],
-        330 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
-        361 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
-        397 => [[['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null]],
-        426 => [[['_route' => 'compte_show', '_controller' => 'App\\Controller\\CompteController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        439 => [[['_route' => 'compte_edit', '_controller' => 'App\\Controller\\CompteController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        447 => [
+        306 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
+        337 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
+        373 => [[['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null]],
+        402 => [[['_route' => 'compte_show', '_controller' => 'App\\Controller\\CompteController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        415 => [[['_route' => 'compte_edit', '_controller' => 'App\\Controller\\CompteController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        423 => [
             [['_route' => 'compte_delete', '_controller' => 'App\\Controller\\CompteController::delete'], ['id'], ['DELETE' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
