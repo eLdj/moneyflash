@@ -19,31 +19,31 @@ class Transaction
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie","retrait"})
      */
     private $codeGenere;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie", "retrait"})
      */
     private $montantTransfert;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie"})
      */
     private $fraisTransaction;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie"})
      */
     private $totalEnvoi;
 
@@ -64,18 +64,18 @@ class Transaction
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie"})
      */
     private $commissionEnvoie;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"envoie", "show"})
      */
     private $statut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"retrait"})
      */
     private $dateRetrait;
 
@@ -91,48 +91,49 @@ class Transaction
 
     /**
      * @ORM\Column(type="string", length=255)
-     *  @Groups({"envoie", "show"})
+     *  @Groups({"envoie", "retrait"})
      */
     private $nomCompletE;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie", "retrait"})
      */
     private $telE;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie", "retrait"})
      */
     private $adresseE;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie"})
      */
     private $cinE;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie", "retrait"})
      */
     private $nomCompletB;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"envoie", "show"})
+     * @Groups({"envoie", "retrait"})
      */
     private $telB;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"envoie", "show"})
+     * @Groups({"retrait", "show"})
      */
     private $adresseB;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"retrait"})
      */
     private $cinB;
 

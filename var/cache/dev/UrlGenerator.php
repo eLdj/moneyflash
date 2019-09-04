@@ -25,6 +25,7 @@ return [
     'login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/api/login_check']], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/api/logout']], [], []],
     'envoi' => [[], ['_controller' => 'App\\Controller\\TransfertController::envoie'], [], [['text', '/api/envoi']], [], []],
+    'findcode' => [[], ['_controller' => 'App\\Controller\\TransfertController::findCode'], [], [['text', '/api/findcode']], [], []],
     'retrait' => [[], ['_controller' => 'App\\Controller\\TransfertController::retrait'], [], [['text', '/api/retrait']], [], []],
     'attcompt' => [[], ['_controller' => 'App\\Controller\\TransfertController::attcmpt'], [], [['text', '/api/attcmpt']], [], []],
     'api_entrypoint' => [['index', '_format'], ['_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index' => 'index'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', 'index', 'index', true], ['text', '/api']], [], []],

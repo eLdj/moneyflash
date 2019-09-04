@@ -98,40 +98,79 @@ class TransfertController extends FOSRestController
                 'Content-Type' => 'application/json'
             ]);
     
+    }
+
+    public function codeSearch(TransactionRepository $trans,$code)
+    {
+        
+        $codesearch = $trans->findOneBy(['codeGenere' => $code]);
+
+        if(!$codesearch)
+        {
+            throw new HttpException(403,'Ce code n\'existe pas !');
+        }
+        elseif($codesearch->getStatut()==$this->retire)
+        {
+           // return  $this->handleView($this->view('Ce code a été déjà utilisé', Response::HTTP_CREATED));
+           throw new HttpException(406,'Ce code a été déjà utilisé');
+        
         }
 
+        return  $codesearch;
+    }
+
     /**
-     * @Rest\Get(
+     * @Rest\Post(
+     *  path="/findcode",
+     *  name="findcode"
+     * )
+     */
+    public function findCode(Request $request,TransactionRepository $trans,SerializerInterface $serializer){
+
+        $data = json_decode($request->getContent(),true);
+            
+        if(!$data){
+
+            $data=$request->request->all();
+        }
+
+        $code = $data['code_genere'];
+
+        $cocefind = $this->codeSearch($trans,$code);
+
+        $data = $serializer->serialize($cocefind, 'json',[
+            'groups' => ['envoie']
+        ]);
+
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+    
+    /**
+     * @Rest\Post(
      *  path = "/retrait",
      *  name = "retrait"
      * )
      *  @Rest\View(statusCode = 201)
      */
-    public function retrait(Request $request,TransactionRepository $exp,ValidatorInterface $validator,ObjectManager $manager)
+    public function retrait(Request $request,TransactionRepository $exp,ValidatorInterface $validator,ObjectManager $manager,SerializerInterface $serializer)
     {
         $cmpt = $this->getUser()->getCompte();
 
-       $data = json_decode($request->getContent(),true);
+    $data = json_decode($request->getContent(),true);
         
         if(!$data){
 
             $data=$request->request->all();
         }
-   
-        $trans = $exp->findOneBy(['codeGenere' => $data]);
-        if(!$trans)
-        {
-            throw new HttpException(403,'Ce code n\'existe pas !');
-        }
 
-        $statut  = $trans->getStatut();
-
-        if($statut == $this->retire)
-        {
-            return  $this->handleView($this->view('Ce code a été déjà utilisé', Response::HTTP_CREATED));
-        }
-
+        $code = $data['code_genere'];
+        
+        $trans =$this->codeSearch($exp,$code);
+    
         $comRetrait = $trans->getCommissionRetrait();
+
         $montantCmpt = $cmpt->getMontant();
         $montantTrans = $trans->getMontantTransfert();
 
@@ -141,9 +180,16 @@ class TransfertController extends FOSRestController
             $trans->setDateRetrait(new \DateTime('now'));
             $cmpt->setMontant($montantCmpt + $comRetrait + $montantTrans);
             $manager->flush();
-      
-        return  $this->handleView($this->view('Retrait effectué avec succés', Response::HTTP_CREATED));
-    }
+
+            $donne = $serializer->serialize($trans, 'json',[
+                'groups' => ['retrait']
+            ]);
+
+            return new Response($donne, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+
 
     /**
      * @Rest\Get(

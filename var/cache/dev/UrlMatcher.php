@@ -20,7 +20,8 @@ return [
         ],
         '/api/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, ['GET' => 0], null, false, false, null]],
         '/api/envoi' => [[['_route' => 'envoi', '_controller' => 'App\\Controller\\TransfertController::envoie'], null, ['POST' => 0], null, false, false, null]],
-        '/api/retrait' => [[['_route' => 'retrait', '_controller' => 'App\\Controller\\TransfertController::retrait'], null, ['GET' => 0], null, false, false, null]],
+        '/api/findcode' => [[['_route' => 'findcode', '_controller' => 'App\\Controller\\TransfertController::findCode'], null, ['POST' => 0], null, false, false, null]],
+        '/api/retrait' => [[['_route' => 'retrait', '_controller' => 'App\\Controller\\TransfertController::retrait'], null, ['POST' => 0], null, false, false, null]],
         '/api/attcmpt' => [[['_route' => 'attcompt', '_controller' => 'App\\Controller\\TransfertController::attcmpt'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
