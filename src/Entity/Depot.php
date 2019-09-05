@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,16 +22,21 @@ class Depot
      * @ORM\Column(type="bigint")
      *  /**
      * @Assert\GreaterThanOrEqual(75000,message="votre dépôt doit être suppérieru à 75000")
+     * @Groups({"find"})
+     * 
      */
     private $montantDepot;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"find"})
      */
     private $dateDepot;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="depots")
+     * @Groups({"find"})
+     * 
      */
     private $caissier;
 
@@ -41,7 +47,7 @@ class Depot
     
     public function __construct()
     {
-        $this->dateDepot = new \DateTime('now');
+        $this->dateDepot;
     }
 
     public function getId(): ?int
@@ -63,7 +69,7 @@ class Depot
 
     public function getDateDepot(): ?\DateTimeInterface
     {
-        return $this->dateDepot = new \DateTime('now');
+        return $this->dateDepot;
     }
 
     public function setDateDepot(\DateTimeInterface $dateDepot): self

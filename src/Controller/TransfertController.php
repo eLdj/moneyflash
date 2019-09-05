@@ -111,7 +111,7 @@ class TransfertController extends FOSRestController
         }
         elseif($codesearch->getStatut()==$this->retire)
         {
-           // return  $this->handleView($this->view('Ce code a été déjà utilisé', Response::HTTP_CREATED));
+        
            throw new HttpException(406,'Ce code a été déjà utilisé');
         
         }

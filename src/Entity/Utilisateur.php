@@ -6,11 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -65,6 +66,7 @@ class Utilisateur implements UserInterface
      *     match=false,
      *     message="Votre nom ne doit pas contenir de nombre"
      * )
+     * @Groups({"find"})
      */
     private $nom;
 
@@ -76,6 +78,7 @@ class Utilisateur implements UserInterface
      *     match=false,
      *     message="Votre nom ne doit pas contenir de nombre"
      * )
+     * @Groups({"find"})
      */
     private $prenom;
 

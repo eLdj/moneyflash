@@ -5996,12 +5996,19 @@
         <argument>make:migration</argument>
       </call>
     </service>
-    <service id=".service_locator.SZWCsH0" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.fVPVD8b" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="cpt" type="service" id=".errored..service_locator.SZWCsH0.App\Entity\Compte"/>
-        <argument key="dpt" type="service" id=".errored..service_locator.SZWCsH0.App\Entity\Depot"/>
+        <argument key="cpt" type="service" id="App\Repository\CompteRepository"/>
+        <argument key="dpt" type="service" id=".errored..service_locator.fVPVD8b.App\Entity\Depot"/>
         <argument key="validator" type="service" id="validator"/>
+      </argument>
+    </service>
+    <service id=".service_locator.4e0l2SM" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="cpt" type="service" id="App\Repository\CompteRepository"/>
+        <argument key="serializer" type="service" id="serializer"/>
       </argument>
     </service>
     <service id=".service_locator.l2alLEu" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -6111,10 +6118,11 @@
         <argument key="user" type="service" id="App\Repository\UtilisateurRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.svHF7Y5" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.jJdbipT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\AdminController::depot" type="service" id=".service_locator.SZWCsH0"/>
+        <argument key="App\Controller\AdminController::depot" type="service" id=".service_locator.fVPVD8b"/>
+        <argument key="App\Controller\AdminController::findNum" type="service" id=".service_locator.4e0l2SM"/>
         <argument key="App\Controller\AdminController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\CompteController::delete" type="service" id=".service_locator.M30T2zO"/>
         <argument key="App\Controller\CompteController::edit" type="service" id=".service_locator.M30T2zO"/>
@@ -6137,7 +6145,8 @@
         <argument key="App\Controller\TransfertController::findCode" type="service" id=".service_locator.wckgq2u"/>
         <argument key="App\Controller\TransfertController::retrait" type="service" id=".service_locator.ZKgczUH"/>
         <argument key="App\Controller\TransfertController::setViewHandler" type="service" id=".service_locator.l2alLEu"/>
-        <argument key="App\Controller\AdminController:depot" type="service" id=".service_locator.SZWCsH0"/>
+        <argument key="App\Controller\AdminController:depot" type="service" id=".service_locator.fVPVD8b"/>
+        <argument key="App\Controller\AdminController:findNum" type="service" id=".service_locator.4e0l2SM"/>
         <argument key="App\Controller\AdminController:setViewHandler" type="service" id=".service_locator.l2alLEu"/>
         <argument key="App\Controller\CompteController:delete" type="service" id=".service_locator.M30T2zO"/>
         <argument key="App\Controller\CompteController:edit" type="service" id=".service_locator.M30T2zO"/>
@@ -6457,12 +6466,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.svHF7Y5"/>
+      <argument type="service" id=".service_locator.jJdbipT"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.svHF7Y5"/>
+      <argument type="service" id=".service_locator.jJdbipT"/>
     </service>
     <service id="fos_rest.serializer.form_error_handler.inner" class="JMS\Serializer\Handler\FormErrorHandler" public="false">
       <argument>null</argument>
@@ -6503,8 +6512,7 @@
       <argument type="service" id="api_platform.metadata.property.metadata_factory.cached"/>
       <argument type="service" id="api_platform.path_segment_name_generator.underscore"/>
     </service>
-    <service id=".errored..service_locator.SZWCsH0.App\Entity\Compte" class="App\Entity\Compte"/>
-    <service id=".errored..service_locator.SZWCsH0.App\Entity\Depot" class="App\Entity\Depot"/>
+    <service id=".errored..service_locator.fVPVD8b.App\Entity\Depot" class="App\Entity\Depot"/>
     <service id=".errored..service_locator.M30T2zO.App\Entity\Compte" class="App\Entity\Compte"/>
     <service id=".errored..service_locator.8CvDPsA.App\Entity\Partenaire" class="App\Entity\Partenaire"/>
     <service id=".errored..service_locator.uVQN3xu.App\Entity\Utilisateur" class="App\Entity\Utilisateur"/>
@@ -6898,7 +6906,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.svHF7Y5"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.jJdbipT"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>

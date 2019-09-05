@@ -5,7 +5,7 @@ namespace Symfony\Component\VarExporter\Internal;
 return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
     $o = [
         clone (($p = &Registry::$prototypes)['FOS\\RestBundle\\Controller\\Annotations\\View'] ?? Registry::p('FOS\\RestBundle\\Controller\\Annotations\\View')),
-        clone ($p['FOS\\RestBundle\\Controller\\Annotations\\Put'] ?? Registry::p('FOS\\RestBundle\\Controller\\Annotations\\Put')),
+        clone ($p['FOS\\RestBundle\\Controller\\Annotations\\Post'] ?? Registry::p('FOS\\RestBundle\\Controller\\Annotations\\Post')),
         clone ($p['Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\ParamConverter'] ?? Registry::p('Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\ParamConverter')),
     ],
     null,
@@ -17,14 +17,14 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
         ],
         'Symfony\\Component\\Routing\\Annotation\\Route' => [
             'path' => [
-                1 => '/depot/{id}',
+                1 => '/depot',
             ],
             'name' => [
                 1 => 'depot',
             ],
             'methods' => [
                 1 => [
-                    'PUT',
+                    'POST',
                 ],
             ],
         ],

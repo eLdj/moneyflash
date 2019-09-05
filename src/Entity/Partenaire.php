@@ -5,8 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -29,16 +30,19 @@ class Partenaire
      *     match=true,
      *     message="Entrez un ninea valide"
      * )
+     * @Groups({"find"})
      */
     private $ninea;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $siege;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"find"})
      */
     private $raisonSociale;
 
@@ -49,6 +53,7 @@ class Partenaire
      *     message = " '{{ value }}' Cet email n'est pas valide.",
      *     checkMX = true
      * )
+     * @Groups({"find"})
      */
     private $emailP;
 
@@ -60,6 +65,7 @@ class Partenaire
      *     match=true,
      *     message="Votre numero ne doit pas contenir de lettre"
      * )
+     * @Groups({"find"})
      */
     private $telephoneP;
 
@@ -80,6 +86,7 @@ class Partenaire
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"find"})
      */
     private $statut;
 

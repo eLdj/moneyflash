@@ -4,7 +4,8 @@
 
 return [
     '_twig_error_test' => [['code', '_format'], ['_controller' => 'twig.controller.preview_error::previewErrorPageAction', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], []],
-    'depot' => [['id'], ['_controller' => 'App\\Controller\\AdminController::depot'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/depot']], [], []],
+    'depot' => [[], ['_controller' => 'App\\Controller\\AdminController::depot'], [], [['text', '/api/depot']], [], []],
+    'findnum' => [[], ['_controller' => 'App\\Controller\\AdminController::findNum'], [], [['text', '/api/findnum']], [], []],
     'compte_index' => [[], ['_controller' => 'App\\Controller\\CompteController::index'], [], [['text', '/compte/']], [], []],
     'compte_new' => [[], ['_controller' => 'App\\Controller\\CompteController::new'], [], [['text', '/compte/new']], [], []],
     'compte_show' => [['id'], ['_controller' => 'App\\Controller\\CompteController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/compte']], [], []],

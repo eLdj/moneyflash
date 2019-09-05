@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -25,6 +26,7 @@ class Compte
 
     /**
      * @ORM\Column(type="bigint")
+     * @Groups({"find"})
      */
     private $montant = 0;
 
@@ -35,16 +37,19 @@ class Compte
 
     /**
      * @ORM\Column(name="numero",type="bigint", unique=true)
+     * @Groups({"find"})
      */
     private $numero;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Partenaire", inversedBy="comptes")
+     * @Groups({"find"})
      */
     private $partenaire;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Depot", mappedBy="compte")
+     * @Groups({"find"})
      */
     private $depots;
 
